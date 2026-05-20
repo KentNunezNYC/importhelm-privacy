@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ImportHelm — Liquid Glass Style</title>
+<style>
+  :root {
+    --bg: #0a1426;
+    --text: #f5f7fb;
+    --soft: #94a3b8;
+    --accent: #0a84ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    padding: 30px 20px 60px;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  h1 .accent { color: var(--accent); }
+  .subtitle {
+    text-align: center;
+    color: var(--soft);
+    font-size: 14px;
+    margin-bottom: 36px;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .option-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .option-label { margin-bottom: 16px; text-align: center; }
+  .option-label .name {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    display: block;
+  }
+  .option-label .tag {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .option-label.glass .tag { color: #67e8f9; }
+
+  /* iPhone frame */
+  .phone {
+    width: 380px;
+    height: 800px;
+    background: #1a1a1f;
+    border-radius: 54px;
+    padding: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+    position: relative;
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 42px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+  }
+  /* Background wallpapers for the two phones (just so glass shows up) */
+  .phone-screen.flat {
+    background:
+      radial-gradient(circle at 20% 30%, #1e3a8a 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, #6b21a8 0%, transparent 50%),
+      linear-gradient(180deg, #0a0e1a 0%, #050810 100%);
+  }
+  .phone-screen.glass {
+    background:
+      radial-gradient(circle at 25% 20%, rgba(10,132,255,0.4) 0%, transparent 45%),
+      radial-gradient(circle at 75% 80%, rgba(168,85,247,0.35) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(20,184,166,0.2) 0%, transparent 60%),
+      linear-gradient(180deg, #050a14 0%, #0a1730 100%);
+  }
+  .status-bar {
+    height: 36px;
+    padding: 12px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .status-right { display: flex; align-items: center; gap: 4px; }
+  .header-strip { padding: 8px 22px 14px; }
+  .header-title {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: var(--soft);
+    margin-top: 2px;
+  }
+  .content {
+    flex: 1;
+    overflow: hidden;
+    padding: 12px 18px 0;
+  }
+  .section-title {
+    font-size: 12px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin: 4px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Tiles container */
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .tile-label {
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* ── FLAT (CURRENT) STYLE ICONS ── */
+  .tile-icon-flat {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .flat-blue { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); }
+  .flat-purple { background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%); }
+  .flat-teal { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); }
+  .flat-green { background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); }
+  .flat-orange { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); }
+  .flat-yellow { background: linear-gradient(135deg, #eab308 0%, #a16207 100%); }
+  .flat-pink { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+  .flat-slate { background: linear-gradient(135deg, #64748b 0%, #334155 100%); }
+  .flat-red { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+
+  /* ── LIQUID GLASS STYLE ICONS ── */
+  .tile-icon-glass {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.35),
+      inset 0 1px 1px rgba(255,255,255,0.18),
+      inset 0 -1px 1px rgba(0,0,0,0.15),
+      0 0 0 0.5px rgba(255,255,255,0.18);
+  }
+  /* Inner highlight reflection */
+  .tile-icon-glass::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+    pointer-events: none;
+    border-radius: 18px 18px 50% 50% / 18px 18px 25% 25%;
+  }
+  /* Glass colored tints (more translucent than flat versions) */
+  .glass-blue { background: linear-gradient(135deg, rgba(59,130,246,0.45) 0%, rgba(30,64,175,0.6) 100%); }
+  .glass-purple { background: linear-gradient(135deg, rgba(168,85,247,0.45) 0%, rgba(107,33,168,0.6) 100%); }
+  .glass-teal { background: linear-gradient(135deg, rgba(20,184,166,0.45) 0%, rgba(13,148,136,0.6) 100%); }
+  .glass-green { background: linear-gradient(135deg, rgba(34,197,94,0.45) 0%, rgba(21,128,61,0.6) 100%); }
+  .glass-orange { background: linear-gradient(135deg, rgba(249,115,22,0.45) 0%, rgba(194,65,12,0.6) 100%); }
+  .glass-yellow { background: linear-gradient(135deg, rgba(234,179,8,0.5) 0%, rgba(161,98,7,0.6) 100%); }
+  .glass-pink { background: linear-gradient(135deg, rgba(236,72,153,0.45) 0%, rgba(190,24,93,0.6) 100%); }
+  .glass-slate { background: linear-gradient(135deg, rgba(100,116,139,0.5) 0%, rgba(51,65,85,0.6) 100%); }
+  .glass-red { background: linear-gradient(135deg, rgba(239,68,68,0.45) 0%, rgba(185,28,28,0.6) 100%); }
+
+  /* Modal mockup (the question bubble like Kent's screenshot) */
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-flat {
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 280px;
+    color: white;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+  .modal-glass {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-radius: 22px;
+    padding: 24px;
+    width: 90%;
+    max-width: 280px;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.5),
+      inset 0 1px 1px rgba(255,255,255,0.25);
+  }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .modal-body {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .modal-btn-row {
+    display: flex;
+    gap: 10px;
+  }
+  .modal-btn-flat {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .modal-btn-glass {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(10,132,255,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .modal-btn-secondary-flat {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .modal-btn-secondary-glass {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  /* Tab bars */
+  .tab-bar {
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 18px 22px;
+    margin-top: auto;
+  }
+  .tab-bar.flat {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    background: rgba(15,23,41,0.85);
+  }
+  .tab-bar.glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    color: var(--soft);
+    font-weight: 600;
+  }
+  .tab .ti { font-size: 18px; }
+  .tab.active { color: var(--accent); }
+
+  /* Modal toggle button */
+  .demo-btn {
+    margin-top: 20px;
+    padding: 10px 18px;
+    background: rgba(10,132,255,0.2);
+    border: 1px solid rgba(10,132,255,0.4);
+    color: var(--accent);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  .demo-btn:hover { background: rgba(10,132,255,0.3); }
+
+  .key-finding {
+    max-width: 980px;
+    margin: 40px auto 0;
+    background: rgba(10, 132, 255, 0.1);
+    border: 1px solid rgba(10, 132, 255, 0.3);
+    border-radius: 14px;
+    padding: 22px 28px;
+  }
+  .key-finding h3 {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .key-finding p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .key-finding strong { color: white; }
+  .key-finding ul {
+    margin: 12px 0 0 22px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Liquid Glass <span class="accent">vs</span> Flat tiles</h1>
+  <p class="subtitle">
+    Your reference is iOS 26 Liquid Glass aesthetic: frosted icons, translucent modals, depth from light reflections. Here's the same 8 Helm Picks tiles + a modal in both styles. Tap the button below each phone to preview the modal.
+  </p>
+
+  <div class="grid-2">
+
+    <!-- ═══ FLAT (CURRENT) ═══ -->
+    <div class="option-col">
+      <div class="option-label">
+        <span class="name">Today · Flat colored tiles</span>
+        <span class="tag">solid gradient · current build</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen flat" id="phoneA">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right"><span>📶</span><span>📡</span><span>🔋</span></div>
+          </div>
+          <div class="header-strip">
+            <div class="header-title">Home</div>
+            <div class="header-sub">Your import command center</div>
+          </div>
+          <div class="content">
+            <div class="section-title">⭐ Helm Picks</div>
+            <div class="tiles">
+              <div class="tile"><div class="tile-icon-flat flat-blue">📷</div><div class="tile-label">Camera</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-slate">📦</div><div class="tile-label">Container</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-teal">🗺</div><div class="tile-label">Trade Map</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-purple">🤖</div><div class="tile-label">Helm Bot</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-green">💰</div><div class="tile-label">Refund</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-yellow">⭐</div><div class="tile-label">Score</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-blue">🌍</div><div class="tile-label">Compare</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-orange">🔧</div><div class="tile-label">Engineer</div></div>
+            </div>
+            <div class="section-title">📊 At a glance</div>
+            <div class="tiles" style="grid-template-columns: repeat(3, 1fr);">
+              <div class="tile"><div class="tile-icon-flat flat-red" style="width: 80px; height: 80px;">📈</div><div class="tile-label">14 shipments</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-orange" style="width: 80px; height: 80px;">⚠</div><div class="tile-label">2 alerts</div></div>
+              <div class="tile"><div class="tile-icon-flat flat-green" style="width: 80px; height: 80px;">✓</div><div class="tile-label">6/7 docs</div></div>
+            </div>
+          </div>
+          <div class="modal-overlay" id="modalA">
+            <div class="modal-flat">
+              <div class="modal-title">Clear sample data?</div>
+              <div class="modal-body">This switches the app from demo mode to your real imported data. You can switch back anytime.</div>
+              <div class="modal-btn-row">
+                <div class="modal-btn-secondary-flat" onclick="document.getElementById('modalA').classList.remove('show')">Cancel</div>
+                <div class="modal-btn-flat" onclick="document.getElementById('modalA').classList.remove('show')">Use my data</div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar flat">
+            <div class="tab active"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="demo-btn" onclick="document.getElementById('modalA').classList.add('show')">Show modal preview</button>
+    </div>
+
+    <!-- ═══ LIQUID GLASS ═══ -->
+    <div class="option-col">
+      <div class="option-label glass">
+        <span class="name">Liquid Glass · iOS 26 style</span>
+        <span class="tag">your new reference</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen glass" id="phoneB">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right"><span>📶</span><span>📡</span><span>🔋</span></div>
+          </div>
+          <div class="header-strip">
+            <div class="header-title">Home</div>
+            <div class="header-sub">Your import command center</div>
+          </div>
+          <div class="content">
+            <div class="section-title">⭐ Helm Picks</div>
+            <div class="tiles">
+              <div class="tile"><div class="tile-icon-glass glass-blue">📷</div><div class="tile-label">Camera</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-slate">📦</div><div class="tile-label">Container</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-teal">🗺</div><div class="tile-label">Trade Map</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-purple">🤖</div><div class="tile-label">Helm Bot</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-green">💰</div><div class="tile-label">Refund</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-yellow">⭐</div><div class="tile-label">Score</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-blue">🌍</div><div class="tile-label">Compare</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-orange">🔧</div><div class="tile-label">Engineer</div></div>
+            </div>
+            <div class="section-title">📊 At a glance</div>
+            <div class="tiles" style="grid-template-columns: repeat(3, 1fr);">
+              <div class="tile"><div class="tile-icon-glass glass-red" style="width: 80px; height: 80px;">📈</div><div class="tile-label">14 shipments</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-orange" style="width: 80px; height: 80px;">⚠</div><div class="tile-label">2 alerts</div></div>
+              <div class="tile"><div class="tile-icon-glass glass-green" style="width: 80px; height: 80px;">✓</div><div class="tile-label">6/7 docs</div></div>
+            </div>
+          </div>
+          <div class="modal-overlay" id="modalB">
+            <div class="modal-glass">
+              <div class="modal-title">Clear sample data?</div>
+              <div class="modal-body">This switches the app from demo mode to your real imported data. You can switch back anytime.</div>
+              <div class="modal-btn-row">
+                <div class="modal-btn-secondary-glass" onclick="document.getElementById('modalB').classList.remove('show')">Cancel</div>
+                <div class="modal-btn-glass" onclick="document.getElementById('modalB').classList.remove('show')">Use my data</div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar glass">
+            <div class="tab active"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="demo-btn" onclick="document.getElementById('modalB').classList.add('show')">Show modal preview</button>
+    </div>
+
+  </div>
+
+  <div class="key-finding">
+    <h3>What changes if we go Liquid Glass</h3>
+    <p>
+      Same icons, same colors, same emoji symbols. What's different is the <strong>material</strong>:
+    </p>
+    <ul>
+      <li><strong>Icon tiles</strong> become semi-translucent with a backdrop blur. They feel like glass over a softly colored gel instead of solid plastic.</li>
+      <li><strong>Subtle highlights</strong> across the top edge of each tile add depth (a soft reflection, like real glass under light).</li>
+      <li><strong>Modals + alerts</strong> get the same frosted treatment. The "Clear sample data?" confirm looks like the popup in your reference screenshot.</li>
+      <li><strong>Tab bar</strong> at the bottom becomes translucent, blurred. iPhone-native feel.</li>
+      <li><strong>Your colorful icon identity stays.</strong> The colors are still there, just behind a glass layer. We are not flattening or genericizing.</li>
+    </ul>
+    <p style="margin-top: 14px;">
+      <strong>Tech feasibility:</strong> very doable in React Native via expo-blur on iOS. Free, on-device, no new dependencies. Android renders slightly different but acceptable. The work is about 6-10 hours to apply across the app: Helm Picks tiles, modals app-wide, tab bar, and a few headers.
+    </p>
+    <p style="margin-top: 12px;">
+      <strong>Click the buttons under each phone</strong> to compare the modal popup style. The glass version is what you flagged in your screenshot.
+    </p>
+  </div>
+</div>
+</body>
+</html>
