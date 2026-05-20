@@ -3,10 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ImportHelm — Liquid Glass Style</title>
+<title>ImportHelm — Liquid Glass Preview</title>
 <style>
   :root {
-    --bg: #0a1426;
     --text: #f5f7fb;
     --soft: #94a3b8;
     --accent: #0a84ff;
@@ -14,11 +13,11 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
-    background: var(--bg);
+    background: #050810;
     color: var(--text);
     min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
     padding: 30px 20px 60px;
+    -webkit-font-smoothing: antialiased;
   }
   .container { max-width: 1400px; margin: 0 auto; }
   h1 {
@@ -34,15 +33,14 @@
     color: var(--soft);
     font-size: 14px;
     margin-bottom: 36px;
-    max-width: 760px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 800px;
+    margin: 0 auto 36px;
     line-height: 1.5;
   }
   .grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
+    gap: 36px;
     max-width: 980px;
     margin: 0 auto;
   }
@@ -51,7 +49,7 @@
     flex-direction: column;
     align-items: center;
   }
-  .option-label { margin-bottom: 16px; text-align: center; }
+  .option-label { margin-bottom: 14px; text-align: center; }
   .option-label .name {
     font-size: 17px;
     font-weight: 800;
@@ -86,23 +84,28 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-size: cover;
-    background-position: center;
   }
-  /* Background wallpapers for the two phones (just so glass shows up) */
+
+  /* ── COLORFUL "WALLPAPER" backgrounds so glass effect is visible ── */
   .phone-screen.flat {
     background:
-      radial-gradient(circle at 20% 30%, #1e3a8a 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, #6b21a8 0%, transparent 50%),
-      linear-gradient(180deg, #0a0e1a 0%, #050810 100%);
+      radial-gradient(circle at 18% 18%, #1e3a8a 0%, transparent 35%),
+      radial-gradient(circle at 82% 28%, #6b21a8 0%, transparent 40%),
+      radial-gradient(circle at 50% 55%, #831843 0%, transparent 40%),
+      radial-gradient(circle at 25% 78%, #0e7490 0%, transparent 35%),
+      radial-gradient(circle at 75% 88%, #15803d 0%, transparent 30%),
+      #050810;
   }
   .phone-screen.glass {
     background:
-      radial-gradient(circle at 25% 20%, rgba(10,132,255,0.4) 0%, transparent 45%),
-      radial-gradient(circle at 75% 80%, rgba(168,85,247,0.35) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(20,184,166,0.2) 0%, transparent 60%),
-      linear-gradient(180deg, #050a14 0%, #0a1730 100%);
+      radial-gradient(circle at 18% 18%, #3b82f6 0%, transparent 35%),
+      radial-gradient(circle at 82% 28%, #a855f7 0%, transparent 40%),
+      radial-gradient(circle at 50% 55%, #ec4899 0%, transparent 40%),
+      radial-gradient(circle at 25% 78%, #14b8a6 0%, transparent 35%),
+      radial-gradient(circle at 75% 88%, #22c55e 0%, transparent 30%),
+      #050810;
   }
+  /* Status bar etc */
   .status-bar {
     height: 36px;
     padding: 12px 28px 0;
@@ -113,17 +116,19 @@
     color: var(--text);
   }
   .status-right { display: flex; align-items: center; gap: 4px; }
-  .header-strip { padding: 8px 22px 14px; }
+  .header-strip { padding: 10px 22px 14px; }
   .header-title {
     font-size: 30px;
     font-weight: 900;
     color: var(--text);
     letter-spacing: -1px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
   .header-sub {
     font-size: 13px;
-    color: var(--soft);
+    color: rgba(255,255,255,0.7);
     margin-top: 2px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
   }
   .content {
     flex: 1;
@@ -132,17 +137,15 @@
   }
   .section-title {
     font-size: 12px;
-    color: var(--soft);
+    color: rgba(255,255,255,0.7);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 700;
     margin: 4px 0 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
   }
 
-  /* Tiles container */
+  /* Tiles */
   .tiles {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -161,17 +164,18 @@
     font-weight: 600;
     text-align: center;
     line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
   }
 
-  /* ── FLAT (CURRENT) STYLE ICONS ── */
-  .tile-icon-flat {
+  /* ──────── FLAT (CURRENT) TILES ──────── */
+  .flat {
     width: 64px;
     height: 64px;
     border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: 32px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
   .flat-blue { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); }
@@ -180,55 +184,81 @@
   .flat-green { background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); }
   .flat-orange { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); }
   .flat-yellow { background: linear-gradient(135deg, #eab308 0%, #a16207 100%); }
-  .flat-pink { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
   .flat-slate { background: linear-gradient(135deg, #64748b 0%, #334155 100%); }
   .flat-red { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
 
-  /* ── LIQUID GLASS STYLE ICONS ── */
-  .tile-icon-glass {
+  /* ──────── LIQUID GLASS TILES — MAJOR REBUILD ──────── */
+  .glass-tile {
     width: 64px;
     height: 64px;
     border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: 32px;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    /* The actual glass effect: */
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border: 0.5px solid rgba(255,255,255,0.2);
     box-shadow:
-      0 8px 24px rgba(0,0,0,0.35),
-      inset 0 1px 1px rgba(255,255,255,0.18),
-      inset 0 -1px 1px rgba(0,0,0,0.15),
-      0 0 0 0.5px rgba(255,255,255,0.18);
+      0 10px 30px rgba(0,0,0,0.35),
+      0 1px 0 rgba(255,255,255,0.25) inset,
+      0 -1px 0 rgba(0,0,0,0.18) inset;
   }
-  /* Inner highlight reflection */
-  .tile-icon-glass::before {
+  /* Bright top reflection — the "wet glass" highlight */
+  .glass-tile::before {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 50%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+    background: linear-gradient(180deg,
+      rgba(255,255,255,0.35) 0%,
+      rgba(255,255,255,0.05) 60%,
+      transparent 100%);
+    border-radius: 18px 18px 50% 50% / 18px 18px 30% 30%;
     pointer-events: none;
-    border-radius: 18px 18px 50% 50% / 18px 18px 25% 25%;
   }
-  /* Glass colored tints (more translucent than flat versions) */
-  .glass-blue { background: linear-gradient(135deg, rgba(59,130,246,0.45) 0%, rgba(30,64,175,0.6) 100%); }
-  .glass-purple { background: linear-gradient(135deg, rgba(168,85,247,0.45) 0%, rgba(107,33,168,0.6) 100%); }
-  .glass-teal { background: linear-gradient(135deg, rgba(20,184,166,0.45) 0%, rgba(13,148,136,0.6) 100%); }
-  .glass-green { background: linear-gradient(135deg, rgba(34,197,94,0.45) 0%, rgba(21,128,61,0.6) 100%); }
-  .glass-orange { background: linear-gradient(135deg, rgba(249,115,22,0.45) 0%, rgba(194,65,12,0.6) 100%); }
-  .glass-yellow { background: linear-gradient(135deg, rgba(234,179,8,0.5) 0%, rgba(161,98,7,0.6) 100%); }
-  .glass-pink { background: linear-gradient(135deg, rgba(236,72,153,0.45) 0%, rgba(190,24,93,0.6) 100%); }
-  .glass-slate { background: linear-gradient(135deg, rgba(100,116,139,0.5) 0%, rgba(51,65,85,0.6) 100%); }
-  .glass-red { background: linear-gradient(135deg, rgba(239,68,68,0.45) 0%, rgba(185,28,28,0.6) 100%); }
+  /* Subtle color tint inside the glass (so the icon has a colored aura but you can still see the background through it) */
+  .glass-tile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: var(--tint-color, transparent);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glass-tile > * { position: relative; z-index: 1; }
+  /* The colored tint per icon — very translucent so the blur shows */
+  .g-blue { --tint-color: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); }
+  .g-purple { --tint-color: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%); }
+  .g-teal { --tint-color: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); }
+  .g-green { --tint-color: linear-gradient(135deg, #22c55e 0%, #15803d 100%); }
+  .g-orange { --tint-color: linear-gradient(135deg, #f97316 0%, #c2410c 100%); }
+  .g-yellow { --tint-color: linear-gradient(135deg, #eab308 0%, #a16207 100%); }
+  .g-slate { --tint-color: linear-gradient(135deg, #64748b 0%, #334155 100%); }
+  .g-red { --tint-color: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
 
-  /* Modal mockup (the question bubble like Kent's screenshot) */
+  /* Big stat tiles (the bottom row showing Liquid Glass at larger size) */
+  .big-tile-flat {
+    width: 86px;
+    height: 86px;
+    border-radius: 22px;
+  }
+  .big-tile-glass {
+    width: 86px;
+    height: 86px;
+    border-radius: 22px;
+  }
+
+  /* ───── Modal mockups ───── */
   .modal-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.45);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: flex;
@@ -243,43 +273,63 @@
     opacity: 1;
     pointer-events: auto;
   }
+
+  /* Flat modal */
   .modal-flat {
     background: #1e293b;
     border-radius: 16px;
     padding: 24px;
-    width: 90%;
+    width: 92%;
     max-width: 280px;
     color: white;
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
   }
+
+  /* GLASS modal — the question bubble like Kent's screenshot */
   .modal-glass {
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border-radius: 22px;
-    padding: 24px;
-    width: 90%;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(50px) saturate(200%);
+    -webkit-backdrop-filter: blur(50px) saturate(200%);
+    border-radius: 24px;
+    padding: 26px;
+    width: 92%;
     max-width: 280px;
     color: white;
-    border: 1px solid rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.22);
     box-shadow:
-      0 20px 60px rgba(0,0,0,0.5),
-      inset 0 1px 1px rgba(255,255,255,0.25);
+      0 25px 70px rgba(0,0,0,0.6),
+      inset 0 1px 1px rgba(255,255,255,0.3);
+    position: relative;
+  }
+  .modal-glass::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+    border-radius: 24px 24px 60% 60% / 24px 24px 30% 30%;
+    pointer-events: none;
   }
   .modal-title {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 800;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
   }
   .modal-body {
     font-size: 13px;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.5;
-    margin-bottom: 18px;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.55;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
   }
   .modal-btn-row {
     display: flex;
     gap: 10px;
+    position: relative;
+    z-index: 1;
   }
   .modal-btn-flat {
     flex: 1;
@@ -294,18 +344,28 @@
   }
   .modal-btn-glass {
     flex: 1;
-    padding: 12px;
-    border-radius: 12px;
+    padding: 13px;
+    border-radius: 14px;
     background: rgba(10,132,255,0.55);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     color: white;
     font-weight: 700;
     font-size: 13px;
     text-align: center;
     cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .modal-btn-glass::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 100%);
+    pointer-events: none;
   }
   .modal-btn-secondary-flat {
     flex: 1;
@@ -320,17 +380,17 @@
   }
   .modal-btn-secondary-glass {
     flex: 1;
-    padding: 12px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    padding: 13px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     color: white;
     font-weight: 600;
     font-size: 13px;
     text-align: center;
     cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.18);
   }
 
   /* Tab bars */
@@ -342,14 +402,14 @@
   }
   .tab-bar.flat {
     border-top: 1px solid rgba(255,255,255,0.08);
-    background: rgba(15,23,41,0.85);
+    background: rgba(15,23,41,0.92);
   }
   .tab-bar.glass {
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border-top: 1px solid rgba(255,255,255,0.08);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(50px) saturate(200%);
+    -webkit-backdrop-filter: blur(50px) saturate(200%);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
   }
   .tab {
     display: flex;
@@ -357,16 +417,15 @@
     align-items: center;
     gap: 3px;
     font-size: 9px;
-    color: var(--soft);
+    color: rgba(255,255,255,0.5);
     font-weight: 600;
   }
   .tab .ti { font-size: 18px; }
   .tab.active { color: var(--accent); }
 
-  /* Modal toggle button */
   .demo-btn {
     margin-top: 20px;
-    padding: 10px 18px;
+    padding: 11px 20px;
     background: rgba(10,132,255,0.2);
     border: 1px solid rgba(10,132,255,0.4);
     color: var(--accent);
@@ -381,8 +440,8 @@
   .key-finding {
     max-width: 980px;
     margin: 40px auto 0;
-    background: rgba(10, 132, 255, 0.1);
-    border: 1px solid rgba(10, 132, 255, 0.3);
+    background: rgba(10, 132, 255, 0.08);
+    border: 1px solid rgba(10, 132, 255, 0.25);
     border-radius: 14px;
     padding: 22px 28px;
   }
@@ -400,29 +459,33 @@
     color: var(--text);
   }
   .key-finding strong { color: white; }
-  .key-finding ul {
-    margin: 12px 0 0 22px;
-    padding: 0;
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.7;
+  .browser-warn {
+    max-width: 980px;
+    margin: 20px auto 0;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 13px;
+    color: #fbbf24;
+    text-align: center;
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>Liquid Glass <span class="accent">vs</span> Flat tiles</h1>
+  <h1>Liquid Glass <span class="accent">vs</span> flat tiles</h1>
   <p class="subtitle">
-    Your reference is iOS 26 Liquid Glass aesthetic: frosted icons, translucent modals, depth from light reflections. Here's the same 8 Helm Picks tiles + a modal in both styles. Tap the button below each phone to preview the modal.
+    The phone backgrounds are intentionally colorful so you can SEE the blur. On the right phone, the colored wallpaper bleeds through the icons. That's what makes it look like real glass. On a normal app screen the wallpaper is more subtle, but the principle is the same: light + color passes through, just softened.
   </p>
 
   <div class="grid-2">
 
-    <!-- ═══ FLAT (CURRENT) ═══ -->
+    <!-- ═══ FLAT ═══ -->
     <div class="option-col">
       <div class="option-label">
-        <span class="name">Today · Flat colored tiles</span>
-        <span class="tag">solid gradient · current build</span>
+        <span class="name">Today · Solid colored tiles</span>
+        <span class="tag">flat gradient · opaque</span>
       </div>
       <div class="phone">
         <div class="phone-screen flat" id="phoneA">
@@ -437,20 +500,20 @@
           <div class="content">
             <div class="section-title">⭐ Helm Picks</div>
             <div class="tiles">
-              <div class="tile"><div class="tile-icon-flat flat-blue">📷</div><div class="tile-label">Camera</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-slate">📦</div><div class="tile-label">Container</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-teal">🗺</div><div class="tile-label">Trade Map</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-purple">🤖</div><div class="tile-label">Helm Bot</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-green">💰</div><div class="tile-label">Refund</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-yellow">⭐</div><div class="tile-label">Score</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-blue">🌍</div><div class="tile-label">Compare</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-orange">🔧</div><div class="tile-label">Engineer</div></div>
+              <div class="tile"><div class="flat flat-blue">📷</div><div class="tile-label">Camera</div></div>
+              <div class="tile"><div class="flat flat-slate">📦</div><div class="tile-label">Container</div></div>
+              <div class="tile"><div class="flat flat-teal">🗺</div><div class="tile-label">Trade Map</div></div>
+              <div class="tile"><div class="flat flat-purple">🤖</div><div class="tile-label">Helm Bot</div></div>
+              <div class="tile"><div class="flat flat-green">💰</div><div class="tile-label">Refund</div></div>
+              <div class="tile"><div class="flat flat-yellow">⭐</div><div class="tile-label">Score</div></div>
+              <div class="tile"><div class="flat flat-blue">🌍</div><div class="tile-label">Compare</div></div>
+              <div class="tile"><div class="flat flat-orange">🔧</div><div class="tile-label">Engineer</div></div>
             </div>
             <div class="section-title">📊 At a glance</div>
-            <div class="tiles" style="grid-template-columns: repeat(3, 1fr);">
-              <div class="tile"><div class="tile-icon-flat flat-red" style="width: 80px; height: 80px;">📈</div><div class="tile-label">14 shipments</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-orange" style="width: 80px; height: 80px;">⚠</div><div class="tile-label">2 alerts</div></div>
-              <div class="tile"><div class="tile-icon-flat flat-green" style="width: 80px; height: 80px;">✓</div><div class="tile-label">6/7 docs</div></div>
+            <div class="tiles" style="grid-template-columns: repeat(3, 1fr); gap: 18px;">
+              <div class="tile"><div class="flat flat-red big-tile-flat">📈</div><div class="tile-label">14 shipments</div></div>
+              <div class="tile"><div class="flat flat-orange big-tile-flat">⚠</div><div class="tile-label">2 alerts</div></div>
+              <div class="tile"><div class="flat flat-green big-tile-flat">✓</div><div class="tile-label">6/7 docs</div></div>
             </div>
           </div>
           <div class="modal-overlay" id="modalA">
@@ -475,11 +538,11 @@
       <button class="demo-btn" onclick="document.getElementById('modalA').classList.add('show')">Show modal preview</button>
     </div>
 
-    <!-- ═══ LIQUID GLASS ═══ -->
+    <!-- ═══ GLASS ═══ -->
     <div class="option-col">
       <div class="option-label glass">
         <span class="name">Liquid Glass · iOS 26 style</span>
-        <span class="tag">your new reference</span>
+        <span class="tag">your reference</span>
       </div>
       <div class="phone">
         <div class="phone-screen glass" id="phoneB">
@@ -494,20 +557,20 @@
           <div class="content">
             <div class="section-title">⭐ Helm Picks</div>
             <div class="tiles">
-              <div class="tile"><div class="tile-icon-glass glass-blue">📷</div><div class="tile-label">Camera</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-slate">📦</div><div class="tile-label">Container</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-teal">🗺</div><div class="tile-label">Trade Map</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-purple">🤖</div><div class="tile-label">Helm Bot</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-green">💰</div><div class="tile-label">Refund</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-yellow">⭐</div><div class="tile-label">Score</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-blue">🌍</div><div class="tile-label">Compare</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-orange">🔧</div><div class="tile-label">Engineer</div></div>
+              <div class="tile"><div class="glass-tile g-blue">📷</div><div class="tile-label">Camera</div></div>
+              <div class="tile"><div class="glass-tile g-slate">📦</div><div class="tile-label">Container</div></div>
+              <div class="tile"><div class="glass-tile g-teal">🗺</div><div class="tile-label">Trade Map</div></div>
+              <div class="tile"><div class="glass-tile g-purple">🤖</div><div class="tile-label">Helm Bot</div></div>
+              <div class="tile"><div class="glass-tile g-green">💰</div><div class="tile-label">Refund</div></div>
+              <div class="tile"><div class="glass-tile g-yellow">⭐</div><div class="tile-label">Score</div></div>
+              <div class="tile"><div class="glass-tile g-blue">🌍</div><div class="tile-label">Compare</div></div>
+              <div class="tile"><div class="glass-tile g-orange">🔧</div><div class="tile-label">Engineer</div></div>
             </div>
             <div class="section-title">📊 At a glance</div>
-            <div class="tiles" style="grid-template-columns: repeat(3, 1fr);">
-              <div class="tile"><div class="tile-icon-glass glass-red" style="width: 80px; height: 80px;">📈</div><div class="tile-label">14 shipments</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-orange" style="width: 80px; height: 80px;">⚠</div><div class="tile-label">2 alerts</div></div>
-              <div class="tile"><div class="tile-icon-glass glass-green" style="width: 80px; height: 80px;">✓</div><div class="tile-label">6/7 docs</div></div>
+            <div class="tiles" style="grid-template-columns: repeat(3, 1fr); gap: 18px;">
+              <div class="tile"><div class="glass-tile g-red big-tile-glass">📈</div><div class="tile-label">14 shipments</div></div>
+              <div class="tile"><div class="glass-tile g-orange big-tile-glass">⚠</div><div class="tile-label">2 alerts</div></div>
+              <div class="tile"><div class="glass-tile g-green big-tile-glass">✓</div><div class="tile-label">6/7 docs</div></div>
             </div>
           </div>
           <div class="modal-overlay" id="modalB">
@@ -535,23 +598,18 @@
   </div>
 
   <div class="key-finding">
-    <h3>What changes if we go Liquid Glass</h3>
+    <h3>What you're looking at</h3>
     <p>
-      Same icons, same colors, same emoji symbols. What's different is the <strong>material</strong>:
+      <strong>Left phone:</strong> the tiles are solid plastic-looking shapes. The colored wallpaper behind them is completely blocked. This is how the app looks today.
+      <br/><br/>
+      <strong>Right phone:</strong> the tiles let the wallpaper bleed through. Each tile has a soft colored tint plus a bright top reflection (like real glass under light). The bottom tab bar is also translucent.
+      <br/><br/>
+      <strong>Tap "Show modal preview" under each phone</strong> to see how a confirm dialog looks in each style. The right one matches the screenshot you sent.
     </p>
-    <ul>
-      <li><strong>Icon tiles</strong> become semi-translucent with a backdrop blur. They feel like glass over a softly colored gel instead of solid plastic.</li>
-      <li><strong>Subtle highlights</strong> across the top edge of each tile add depth (a soft reflection, like real glass under light).</li>
-      <li><strong>Modals + alerts</strong> get the same frosted treatment. The "Clear sample data?" confirm looks like the popup in your reference screenshot.</li>
-      <li><strong>Tab bar</strong> at the bottom becomes translucent, blurred. iPhone-native feel.</li>
-      <li><strong>Your colorful icon identity stays.</strong> The colors are still there, just behind a glass layer. We are not flattening or genericizing.</li>
-    </ul>
-    <p style="margin-top: 14px;">
-      <strong>Tech feasibility:</strong> very doable in React Native via expo-blur on iOS. Free, on-device, no new dependencies. Android renders slightly different but acceptable. The work is about 6-10 hours to apply across the app: Helm Picks tiles, modals app-wide, tab bar, and a few headers.
-    </p>
-    <p style="margin-top: 12px;">
-      <strong>Click the buttons under each phone</strong> to compare the modal popup style. The glass version is what you flagged in your screenshot.
-    </p>
+  </div>
+
+  <div class="browser-warn">
+    Note: this only renders properly in modern browsers (Chrome, Edge, Safari, recent Firefox). If both phones look identical, your browser doesn't support backdrop-filter. The real iOS app will render it correctly via expo-blur on iOS 26.
   </div>
 </div>
 </body>
