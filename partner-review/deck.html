@@ -3,361 +3,535 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ImportHelm — App Review</title>
+<title>ImportHelm</title>
 <style>
   :root {
-    --ink: #0f172a;
+    --ink: #050a14;
+    --ink-soft: #0f1729;
     --muted: #475569;
     --soft: #94a3b8;
-    --bg: #0a1420;
-    --slide-bg: #ffffff;
-    --line: #e2e8f0;
+    --line: #e5ecf3;
+    --line-soft: #f1f5f9;
     --accent: #0a84ff;
-    --accent2: #6366f1;
-    --green: #16a34a;
+    --accent-bright: #38a3ff;
+    --accent-deep: #0f4ea8;
     --gold: #f59e0b;
-    --gradient: linear-gradient(135deg, #0a84ff 0%, #6366f1 100%);
-    --gradient-dark: linear-gradient(135deg, #0a1420 0%, #1e293b 100%);
+    --tint: #f0f6ff;
+    --slide-bg: #ffffff;
+    --gradient: linear-gradient(135deg, #0a84ff 0%, #5b3bd4 100%);
+    --gradient-dark: radial-gradient(circle at 80% -10%, rgba(91,59,212,0.35) 0%, transparent 50%),
+                     radial-gradient(circle at -10% 110%, rgba(10,132,255,0.25) 0%, transparent 50%),
+                     linear-gradient(180deg, #050a14 0%, #0a1426 100%);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
     height: 100%;
-    font-family: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif;
     color: var(--ink);
-    background: var(--bg);
+    background: var(--ink);
     overflow: hidden;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
   }
   .deck { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
   .slide {
-    position: absolute; inset: 0;
+    position: absolute;
+    inset: 0;
     background: var(--slide-bg);
-    display: flex; flex-direction: column;
-    padding: 60px 80px;
-    opacity: 0; transform: translateX(40px);
-    transition: opacity .25s ease, transform .25s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 6vh 8vw;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .35s cubic-bezier(.2,.7,.2,1), transform .35s cubic-bezier(.2,.7,.2,1);
     pointer-events: none;
   }
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
-  .slide.dark { background: var(--gradient-dark); color: white; }
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .slide.dark {
+    background: var(--gradient-dark);
+    color: white;
+  }
   .slide.dark h1, .slide.dark h2, .slide.dark .lead { color: white; }
-  .slide.dark .sub { color: rgba(255,255,255,0.7); }
+  .slide.dark .sub { color: rgba(255,255,255,0.6); }
 
   .topbar {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 12px; color: var(--soft);
-    margin-bottom: 28px; text-transform: uppercase;
-    letter-spacing: 1px; font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--soft);
+    margin-bottom: 4vh;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
   }
-  .slide.dark .topbar { color: rgba(255,255,255,0.5); }
-  .topbar .brand-mark { display: inline-flex; align-items: center; gap: 6px; }
-  .topbar .brand-mark span.accent { color: var(--accent); font-weight: 900; }
-  .topbar .brand-mark span.dark { font-weight: 400; }
-  .slide.dark .topbar .brand-mark span.dark { color: white; opacity: 0.85; }
+  .slide.dark .topbar { color: rgba(255,255,255,0.4); }
+  .brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    letter-spacing: -0.3px;
+  }
+  .brand-mark .light { font-weight: 300; text-transform: none; }
+  .brand-mark .accent { color: var(--accent); font-weight: 900; text-transform: none; letter-spacing: -0.3px; }
+  .slide.dark .brand-mark .light { color: white; }
 
-  .title-eyebrow {
-    font-size: 14px; color: var(--accent);
-    font-weight: 800; letter-spacing: 2px;
-    text-transform: uppercase; margin-bottom: 20px;
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--tint);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    align-self: flex-start;
   }
+  .badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .slide.dark .badge {
+    background: rgba(10,132,255,0.15);
+    color: var(--accent-bright);
+  }
+  .badge.gold { color: #92400e; background: #fef3c7; }
+  .badge.gold::before { background: var(--gold); }
+  .slide.dark .badge.gold { color: var(--gold); background: rgba(245,158,11,0.15); }
+
   h1 {
-    font-size: 76px; line-height: 1.02;
-    font-weight: 900; letter-spacing: -2px;
-    margin-bottom: 24px;
+    font-size: clamp(58px, 8vw, 104px);
+    line-height: 0.98;
+    font-weight: 900;
+    letter-spacing: -3px;
+    margin-bottom: 28px;
   }
+  h1 .light { font-weight: 300; }
   h1 .accent { color: var(--accent); }
   .lead {
-    font-size: 24px; line-height: 1.4;
-    color: var(--muted); max-width: 880px;
-    font-weight: 500;
+    font-size: clamp(20px, 2.1vw, 28px);
+    line-height: 1.4;
+    color: var(--muted);
+    max-width: 920px;
+    font-weight: 400;
+    letter-spacing: -0.2px;
   }
+  .lead strong { color: var(--ink); font-weight: 700; }
+  .slide.dark .lead strong { color: white; }
+
   .sub {
-    font-size: 16px; color: var(--soft);
-    margin-top: auto; padding-top: 24px;
+    font-size: 13px;
+    color: var(--soft);
+    margin-top: auto;
+    padding-top: 24px;
+    letter-spacing: 0.5px;
   }
+
   h2 {
-    font-size: 52px; line-height: 1.08;
-    font-weight: 900; letter-spacing: -1.2px;
-    margin-bottom: 20px;
+    font-size: clamp(40px, 5.5vw, 68px);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -1.8px;
+    margin-bottom: 18px;
   }
   h2 .accent { color: var(--accent); }
-  h2 .gold { color: var(--gold); }
+  h2 .light { font-weight: 300; }
 
-  /* About Kent slide */
+  /* Bio slide */
   .bio-grid {
     display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 50px;
-    margin-top: 24px;
+    grid-template-columns: 320px 1fr;
+    gap: 60px;
+    margin-top: 16px;
     align-items: start;
+    flex: 1;
   }
   .bio-card {
-    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
-    border-radius: 18px;
+    background: linear-gradient(160deg, #ffffff 0%, var(--tint) 100%);
+    border-radius: 20px;
     padding: 36px 28px;
     text-align: center;
-    border: 2px solid var(--accent);
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 60px rgba(15,23,42,0.06);
   }
   .bio-avatar {
-    width: 88px; height: 88px;
-    border-radius: 50%;
+    width: 96px; height: 96px;
+    border-radius: 24px;
     background: var(--gradient);
     color: white;
-    font-size: 38px; font-weight: 900;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 18px;
-    letter-spacing: -1px;
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 22px;
+    box-shadow: 0 20px 40px rgba(10,132,255,0.25);
   }
   .bio-name {
-    font-size: 22px; font-weight: 900;
-    color: var(--ink); margin-bottom: 4px;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.5px;
   }
   .bio-title {
-    font-size: 13px; color: var(--accent);
-    font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 2px;
+  }
+  .bio-meta {
+    margin-top: 18px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
   }
   .bio-list {
-    list-style: none; padding: 0;
+    list-style: none;
+    padding: 0;
   }
   .bio-list li {
-    font-size: 18px; line-height: 1.5;
+    font-size: clamp(15px, 1.3vw, 18px);
+    line-height: 1.45;
     color: var(--ink);
-    padding: 10px 0;
-    border-bottom: 1px solid var(--line);
-    display: flex; align-items: center; gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
-  .bio-list li:last-child { border-bottom: 0; }
+  .bio-list li:last-child { border-bottom: 0; padding-bottom: 0; }
   .bio-icon {
-    width: 32px; height: 32px;
-    background: var(--gradient);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 16px;
+    width: 36px; height: 36px;
+    background: var(--tint);
+    color: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
     flex-shrink: 0;
   }
+  .bio-icon strong { font-size: 16px; }
   .bio-quote {
-    margin-top: 24px;
-    font-size: 17px; line-height: 1.5;
+    margin-top: 22px;
+    padding: 16px 20px;
+    font-size: clamp(13px, 1.1vw, 16px);
     color: var(--muted);
-    font-style: italic;
-    padding-left: 16px;
-    border-left: 4px solid var(--accent);
+    line-height: 1.5;
+    background: var(--line-soft);
+    border-radius: 12px;
   }
   .bio-quote strong { color: var(--ink); }
 
-  /* Three pillars (patent flow) */
+  /* Pillars (patent flow) */
   .pillars {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 24px;
     margin-top: 32px;
+    flex: 1;
   }
   .pillar {
-    border: 2px solid var(--line);
-    border-radius: 14px;
-    padding: 26px;
-    background: #fafbfd;
-    display: flex; flex-direction: column;
-    gap: 8px;
+    background: linear-gradient(180deg, #ffffff 0%, var(--line-soft) 100%);
+    border-radius: 18px;
+    padding: 32px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    transition: transform .25s ease;
   }
+  .slide.active .pillar { transform: translateY(0); }
   .pillar.featured {
+    background: linear-gradient(180deg, #ffffff 0%, var(--tint) 100%);
     border-color: var(--accent);
-    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    box-shadow: 0 30px 60px rgba(10,132,255,0.12);
+    transform: translateY(-8px);
+  }
+  .pillar.featured::after {
+    content: "PATENT MOAT";
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 9px;
+    background: var(--gold);
+    color: white;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: 1.4px;
   }
   .pillar-icon {
-    width: 52px; height: 52px;
-    border-radius: 12px;
+    width: 60px; height: 60px;
+    border-radius: 16px;
     background: var(--gradient);
     color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px; margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 8px;
+    box-shadow: 0 12px 30px rgba(10,132,255,0.25);
   }
   .pillar-num {
-    font-size: 11px; font-weight: 800;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    color: var(--soft); margin-bottom: 4px;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
   }
+  .pillar.featured .pillar-num { color: var(--accent); }
   .pillar-title {
-    font-size: 22px; font-weight: 900; margin-bottom: 4px;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.6px;
+    line-height: 1.1;
+    margin-bottom: 8px;
   }
   .pillar-body {
-    font-size: 15px; color: var(--muted); line-height: 1.5;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.55;
   }
-  .pillar-body strong { color: var(--ink); font-weight: 700; }
+  .pillar-body strong { color: var(--ink); font-weight: 600; }
 
-  /* Feature grid (what's inside) */
+  /* Feature grid */
   .feature-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     margin-top: 22px;
+    flex: 1;
   }
   .feature-cat {
-    background: #fafbfd;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 22px 24px;
+    background: var(--line-soft);
+    border-radius: 16px;
+    padding: 22px 26px;
   }
   .feature-cat-title {
-    font-size: 12px; color: var(--accent);
-    font-weight: 800; letter-spacing: 1.5px;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
   .feature-cat-list {
-    list-style: none; padding: 0;
-    font-size: 16px; line-height: 1.55;
+    list-style: none;
+    padding: 0;
+    font-size: clamp(14px, 1.2vw, 17px);
+    line-height: 1.55;
     color: var(--ink);
   }
   .feature-cat-list li {
-    padding: 4px 0;
-    display: flex; align-items: start; gap: 10px;
+    padding: 5px 0;
+    display: flex;
+    align-items: start;
+    gap: 10px;
   }
   .feature-cat-list li::before {
-    content: "•"; color: var(--accent);
-    font-weight: 900; flex-shrink: 0;
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-top: 9px;
+    flex-shrink: 0;
   }
-  .feature-cat-list strong { color: var(--ink); font-weight: 700; }
-  .feature-cat-list .muted { color: var(--muted); font-size: 14px; }
+  .feature-cat-list strong { font-weight: 700; }
+  .feature-cat-list .muted { color: var(--muted); font-size: 14px; font-weight: 400; }
 
-  /* Pain points slide */
-  .pains {
+  /* Operator pain Q&A slide */
+  .qa-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     margin-top: 28px;
+    flex: 1;
   }
-  .pain {
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    border-radius: 14px;
-    padding: 22px 26px;
+  .qa {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px 28px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(15,23,42,0.04);
   }
-  .pain-q {
-    font-size: 18px; font-weight: 800; color: var(--ink);
-    line-height: 1.35;
+  .qa-q {
+    font-size: clamp(16px, 1.4vw, 20px);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.3;
+    letter-spacing: -0.3px;
   }
-  .pain-a {
-    font-size: 14px; color: var(--muted); line-height: 1.5;
+  .qa-q::before {
+    content: "Q.";
+    color: var(--accent);
+    font-weight: 900;
+    margin-right: 6px;
   }
-  .pain-a strong { color: var(--accent); }
-
-  /* Stats row */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin: 28px 0 12px;
+  .qa-a {
+    font-size: clamp(13px, 1.1vw, 15px);
+    color: var(--muted);
+    line-height: 1.55;
   }
-  .stat {
-    text-align: center;
-    padding: 22px 14px;
-    border-radius: 12px;
-    background: #fafbfd;
-    border: 1px solid var(--line);
-  }
-  .stat-value {
-    font-size: 34px; font-weight: 900;
-    color: var(--ink); letter-spacing: -1px;
-    line-height: 1;
-  }
-  .stat-value .accent { color: var(--accent); }
-  .stat-label {
-    font-size: 11px; color: var(--soft);
-    text-transform: uppercase; letter-spacing: 1px;
-    font-weight: 700; margin-top: 8px;
+  .qa-a strong { color: var(--accent); font-weight: 700; }
+  .qa-a::before {
+    content: "A. ";
+    color: var(--ink);
+    font-weight: 800;
+    margin-right: 4px;
   }
 
   /* Close slide */
   .close-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    margin-top: 30px;
-    align-items: stretch;
+    gap: 36px;
+    margin-top: 36px;
+    flex: 1;
   }
   .close-card {
-    background: rgba(255,255,255,0.08);
-    border: 2px solid rgba(255,255,255,0.18);
-    border-radius: 16px;
-    padding: 32px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 36px;
     color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
   .close-card.accent {
-    border-color: var(--accent);
-    background: rgba(10,132,255,0.12);
+    border-color: rgba(10,132,255,0.5);
+    background: linear-gradient(180deg, rgba(10,132,255,0.15) 0%, rgba(91,59,212,0.1) 100%);
+    box-shadow: 0 30px 60px rgba(10,132,255,0.15);
   }
   .close-card h3 {
-    font-size: 13px; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 1.5px;
-    margin-bottom: 14px;
+    font-size: 11px;
+    color: var(--accent-bright);
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    font-weight: 800;
   }
   .close-card p {
-    font-size: 18px; line-height: 1.5; color: white;
+    font-size: clamp(16px, 1.4vw, 20px);
+    line-height: 1.5;
+    color: white;
+    font-weight: 500;
   }
   .close-card .small {
-    font-size: 14px; color: rgba(255,255,255,0.7);
-    line-height: 1.6;
-    margin-top: 14px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
   }
-  .close-card .small strong { color: var(--accent); }
+  .close-card .small strong { color: var(--accent-bright); font-weight: 700; }
 
   /* Nav */
   .nav {
     position: fixed;
-    bottom: 24px; left: 50%;
+    bottom: 28px;
+    left: 50%;
     transform: translateX(-50%);
-    display: flex; gap: 8px;
+    display: flex;
+    gap: 6px;
     z-index: 100;
-    background: rgba(15,23,42,0.6);
-    padding: 8px 12px;
+    background: rgba(15,23,42,0.7);
+    padding: 9px 14px;
     border-radius: 999px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
   .dot {
-    width: 8px; height: 8px;
+    width: 7px; height: 7px;
     background: rgba(255,255,255,0.3);
     border-radius: 50%;
     cursor: pointer;
-    transition: all .2s;
+    transition: all .25s ease;
   }
-  .dot.active { background: white; width: 28px; border-radius: 4px; }
+  .dot.active {
+    background: white;
+    width: 28px;
+    border-radius: 4px;
+  }
   .nav-hint {
-    position: fixed; bottom: 14px; right: 20px;
-    color: rgba(255,255,255,0.4);
-    font-size: 11px; z-index: 100;
+    position: fixed;
+    bottom: 14px;
+    right: 24px;
+    color: rgba(255,255,255,0.35);
+    font-size: 10px;
+    letter-spacing: 1px;
+    z-index: 100;
+    text-transform: uppercase;
+    font-weight: 600;
   }
 
-  .pulse {
+  .pulse-dot {
     width: 10px; height: 10px;
-    background: var(--green);
+    background: #34d399;
     border-radius: 50%;
     display: inline-block;
-    margin-right: 8px;
-    animation: pulse 1.4s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(52,211,153, 0.6);
+    animation: pulse 1.6s ease-in-out infinite;
   }
   @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.4); opacity: 0.6; }
+    0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(52,211,153, 0.6); }
+    50% { transform: scale(1.5); opacity: 0.6; box-shadow: 0 0 0 8px rgba(52,211,153, 0); }
   }
-  .badge {
-    display: inline-block;
-    font-size: 11px; color: var(--accent);
-    background: rgba(10,132,255,0.1);
-    padding: 4px 10px;
-    border-radius: 999px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
+
+  /* Stats inline */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 0 0 8px;
+  }
+  .stat {
+    text-align: left;
+    padding: 18px 22px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, white 0%, var(--tint) 100%);
+    border: 1px solid var(--line);
+  }
+  .stat-value {
+    font-size: clamp(24px, 2.4vw, 34px);
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: -1.2px;
+    line-height: 1;
+  }
+  .stat-value .accent { color: var(--accent); }
+  .stat-label {
+    font-size: 10px;
+    color: var(--soft);
     text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .badge.patent {
-    color: var(--gold);
-    background: rgba(245,158,11,0.12);
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    margin-top: 8px;
   }
 </style>
 </head>
@@ -367,86 +541,97 @@
   <!-- SLIDE 1: TITLE -->
   <section class="slide dark active" data-slide="1">
     <div class="topbar">
-      <span class="brand-mark"><span class="dark">Import</span><span class="accent">Helm</span></span>
-      <span>App review · May 21, 2026</span>
+      <span class="brand-mark"><span class="light">Import</span><span class="accent">Helm</span></span>
+      <span>App review &nbsp;·&nbsp; May 21, 2026</span>
     </div>
-    <div style="margin-top: auto; margin-bottom: 60px;">
-      <div class="title-eyebrow">A mobile import command center</div>
-      <h1><span class="light" style="font-weight:400;">Import</span><span class="accent">Helm</span></h1>
-      <p class="lead" style="color: rgba(255,255,255,0.85);">
-        Every import question — answered in 2 taps from the customer's phone.<br/>
-        Built by an operator, for operators.
+    <div style="margin-top: auto; margin-bottom: 6vh;">
+      <span class="badge gold">⚖ Patent Pending</span>
+      <h1>
+        <span class="light">Import</span><span class="accent">Helm</span>
+      </h1>
+      <p class="lead" style="color: rgba(255,255,255,0.78);">
+        A mobile import command center. <strong>Every duty, HTS, refund, and compliance question answered in two taps</strong> from the customer's phone. Built by an operator with 25+ years in the chair.
       </p>
     </div>
     <div class="sub">
-      Patent Pending · SVLTMK LLC · iOS TestFlight beta
+      SVLTMK LLC &nbsp;·&nbsp; iOS TestFlight beta &nbsp;·&nbsp; Patent Pending
     </div>
   </section>
 
   <!-- SLIDE 2: ABOUT KENT -->
   <section class="slide" data-slide="2">
     <div class="topbar">
-      <span class="brand-mark"><span class="dark">Import</span><span class="accent">Helm</span></span>
-      <span>02 · Who built this</span>
+      <span class="brand-mark"><span class="light">Import</span><span class="accent">Helm</span></span>
+      <span>02 &nbsp;·&nbsp; Who built this</span>
     </div>
     <span class="badge">Why this exists</span>
-    <h2>Built by an operator —<br/><span class="accent">not a software company.</span></h2>
+    <h2>
+      <span class="light">Built by an</span> <span class="accent">operator.</span>
+    </h2>
+    <p class="lead" style="margin-top: 4px; max-width: 1000px;">
+      Not a software company. Not a broker. An operator who's lived this work for 25 years and built the tool he wished he had.
+    </p>
     <div class="bio-grid">
       <div class="bio-card">
         <div class="bio-avatar">KN</div>
         <div class="bio-name">Kent Nunez</div>
-        <div class="bio-title">Operator · Founder</div>
-        <div style="margin-top: 14px; font-size: 13px; color: var(--muted); line-height: 1.5;">
+        <div class="bio-title">Operator &nbsp;·&nbsp; Founder</div>
+        <div class="bio-meta">
           25+ years in operations leadership.<br/>
-          Currently VP of Operations.
+          Currently VP of Operations.<br/>
+          Founder, SVLTMK LLC.
         </div>
       </div>
       <div>
         <ul class="bio-list">
-          <li><span class="bio-icon">🏭</span><span><strong>Warehouses + inbound logistics</strong> — receiving, putaway, cycle counting, cross-docking</span></li>
-          <li><span class="bio-icon">📋</span><span><strong>Customs clearance workflows</strong> — entries, 7501s, broker coordination, ACE</span></li>
-          <li><span class="bio-icon">⚓</span><span><strong>Drayage + container ops</strong> — terminal scheduling, chassis, dual-transactions</span></li>
-          <li><span class="bio-icon">⏱</span><span><strong>Demurrage + detention prevention</strong> — free-time tracking, dispute filings</span></li>
-          <li><span class="bio-icon">💵</span><span><strong>Duty + landed cost</strong> — HTS classification, §232/§301/IEEPA stack</span></li>
+          <li><span class="bio-icon">🏭</span><span><strong>Warehouses and inbound logistics.</strong> Receiving, putaway, cycle counting, cross-docking.</span></li>
+          <li><span class="bio-icon">📋</span><span><strong>Customs clearance workflows.</strong> Entries, 7501s, broker coordination, ACE Portal.</span></li>
+          <li><span class="bio-icon">⚓</span><span><strong>Drayage and container operations.</strong> Terminal scheduling, chassis, dual transactions.</span></li>
+          <li><span class="bio-icon">⏱</span><span><strong>Demurrage and detention prevention.</strong> Free-time tracking, dispute filings.</span></li>
+          <li><span class="bio-icon">💵</span><span><strong>Full duty stack.</strong> HTS classification, §232 three-tier, §301, §122 IEEPA, MPF, HMF.</span></li>
         </ul>
         <p class="bio-quote">
-          Author of <strong>"Lean Without Walls"</strong> — practical guide to clarity, flow, and daily improvement. Trained under Paul Akers in Japan lean methodology.
+          Author of <strong>"Lean Without Walls"</strong>, a practical guide to clarity, flow, and daily improvement in operations. Trained under <strong>Paul Akers</strong> in Japan lean methodology.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 3: THE PATENT FLOW -->
+  <!-- SLIDE 3: PATENT FLOW -->
   <section class="slide" data-slide="3">
     <div class="topbar">
-      <span class="brand-mark"><span class="dark">Import</span><span class="accent">Helm</span></span>
-      <span>03 · The patent flow</span>
+      <span class="brand-mark"><span class="light">Import</span><span class="accent">Helm</span></span>
+      <span>03 &nbsp;·&nbsp; The patent flow</span>
     </div>
-    <span class="badge patent">⚖ Patent Pending · SVLTMK LLC</span>
-    <h2>3 layers nobody else has<br/><span class="accent">put on a phone.</span></h2>
+    <span class="badge gold">⚖ Patent Pending &nbsp;·&nbsp; SVLTMK LLC</span>
+    <h2>
+      Three layers nobody else has<br/>put <span class="accent">on a phone.</span>
+    </h2>
     <div class="pillars">
       <div class="pillar">
         <div class="pillar-icon">📷</div>
         <div class="pillar-num">Layer 1</div>
-        <div class="pillar-title">Camera → HTS</div>
+        <div class="pillar-title">Camera to HTS</div>
         <p class="pillar-body">
-          Snap any product. Claude vision returns the <strong>top-3 HTS codes</strong> in ~5 seconds with confidence + reasoning. No spreadsheet, no broker call.
+          Snap any product. Claude vision returns the <strong>top three HTS codes</strong> in about 5 seconds with confidence percentages and reasoning. No spreadsheet. No broker call.
         </p>
       </div>
       <div class="pillar featured">
-        <div class="pillar-icon" style="background: linear-gradient(135deg, var(--gold) 0%, #ea580c 100%);"><span class="pulse"></span></div>
-        <div class="pillar-num" style="color: var(--gold);">Layer 2 · The moat</div>
-        <div class="pillar-title">HTS → Cheapest Country</div>
+        <div class="pillar-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);">
+          <span class="pulse-dot"></span>
+        </div>
+        <div class="pillar-num">Layer 2</div>
+        <div class="pillar-title">HTS to Cheapest Country</div>
         <p class="pillar-body">
-          Same HTS, modeled across <strong>China · Vietnam · Mexico · India · Korea</strong>. Full duty stack per origin: §301, §232, §122 IEEPA, all of it. <strong>This is what no other app does.</strong>
+          Same HTS modeled across <strong>China, Vietnam, Mexico, India, Korea</strong>. Full duty stack per origin including §301, §232, §122 IEEPA. <strong>No other import app does this.</strong>
         </p>
       </div>
       <div class="pillar">
         <div class="pillar-icon">🛠</div>
         <div class="pillar-num">Layer 3</div>
-        <div class="pillar-title">HTS → Tariff Engineering</div>
+        <div class="pillar-title">HTS to Tariff Engineering</div>
         <p class="pillar-body">
-          AI-suggested product modifications with citations. Change a binding from leather to canvas, drop one chapter, save real money on every unit.
+          AI suggests product modifications with citations. Change a binding from leather to canvas, drop one chapter, save real money on every unit going forward.
         </p>
       </div>
     </div>
@@ -455,116 +640,122 @@
   <!-- SLIDE 4: WHAT'S INSIDE -->
   <section class="slide" data-slide="4">
     <div class="topbar">
-      <span class="brand-mark"><span class="dark">Import</span><span class="accent">Helm</span></span>
-      <span>04 · What's inside</span>
+      <span class="brand-mark"><span class="light">Import</span><span class="accent">Helm</span></span>
+      <span>04 &nbsp;·&nbsp; What's inside</span>
     </div>
     <span class="badge">Beyond the patent</span>
-    <h2>One pocket.<br/><span class="accent">170+ specialized tools.</span></h2>
+    <h2><span class="light">One pocket.</span> <span class="accent">170+ specialized tools.</span></h2>
+    <div class="stats" style="margin-top: 16px;">
+      <div class="stat"><div class="stat-value"><span class="accent">170+</span></div><div class="stat-label">Specialized Tools</div></div>
+      <div class="stat"><div class="stat-value">19,856</div><div class="stat-label">USITC HTS Codes</div></div>
+      <div class="stat"><div class="stat-value"><span class="accent">§232·301·122</span></div><div class="stat-label">Full Tariff Coverage</div></div>
+      <div class="stat"><div class="stat-value">6 Rules</div><div class="stat-label">Refund Detection</div></div>
+    </div>
     <div class="feature-grid">
       <div class="feature-cat">
         <div class="feature-cat-title">🤖 Pocket AI</div>
         <ul class="feature-cat-list">
-          <li><span><strong>Helm Bot</strong> — Claude Sonnet 4.6 concierge that answers from the customer's own shipment data + 5 active CBP knowledge sources</span></li>
-          <li><span><strong>Tool-aware routing</strong> — every answer surfaces the right ImportHelm tool to act on it</span></li>
-          <li><span class="muted">"Always verify with your customs broker before filing" on every regulatory answer</span></li>
+          <li><span><strong>Helm Bot.</strong> Claude Sonnet 4.6 concierge that answers from the customer's own shipment data plus 5 active CBP knowledge sources.</span></li>
+          <li><span><strong>Tool-aware routing.</strong> Every answer surfaces the right ImportHelm tool to act on it.</span></li>
+          <li><span class="muted">Every regulatory answer ends with "always verify with your customs broker before filing."</span></li>
         </ul>
       </div>
       <div class="feature-cat">
         <div class="feature-cat-title">💰 Money tools</div>
         <ul class="feature-cat-list">
-          <li><span><strong>Refund Finder</strong> — 6 detection rules: FTA missed, §301 exclusion, CAPE-eligible, Protest-required, HTS reclass, First Sale</span></li>
-          <li><span><strong>Calculator</strong> — full duty stack: §232 (3 tiers), §301, §122 IEEPA, MPF, HMF</span></li>
-          <li><span><strong>Schedule Brief</strong> — cron-backed weekly email digests, no app open needed</span></li>
+          <li><span><strong>Refund Finder.</strong> Six detection rules: FTA missed, §301 exclusion, CAPE-eligible, Protest-required, HTS reclass, First Sale.</span></li>
+          <li><span><strong>Calculator.</strong> Full duty stack including §232 three-tier, §301, §122 IEEPA, MPF, HMF.</span></li>
+          <li><span><strong>Schedule Brief.</strong> Cron-backed weekly email digests. No app open required.</span></li>
         </ul>
       </div>
       <div class="feature-cat">
         <div class="feature-cat-title">📋 Operations</div>
         <ul class="feature-cat-list">
-          <li><span><strong>Container Plan 3D</strong> — multi-container split + factory-ready PDF</span></li>
-          <li><span><strong>Compliance Checklist</strong> — paste portal links, we don't store files</span></li>
-          <li><span><strong>Trade Map · ISF · FTA · AD/CVD · Drawback</strong> — all on the phone</span></li>
+          <li><span><strong>Container Plan 3D.</strong> Multi-container split with savings math and factory-ready PDF.</span></li>
+          <li><span><strong>Compliance Checklist.</strong> Paste your portal link, we never store the file.</span></li>
+          <li><span><strong>Trade Map, ISF, FTA, AD/CVD, Drawback.</strong> All on the phone.</span></li>
         </ul>
       </div>
       <div class="feature-cat">
         <div class="feature-cat-title">🛡 Credibility built in</div>
         <ul class="feature-cat-list">
-          <li><span><strong>19,856 USITC HTS codes</strong> — current 2026 schedule</span></li>
-          <li><span><strong>Audit-credible math</strong> — citations on every duty answer</span></li>
-          <li><span><strong>Local-first data</strong> — no cloud sync, no analytics tracking</span></li>
+          <li><span><strong>19,856 USITC HTS codes.</strong> Current 2026 schedule.</span></li>
+          <li><span><strong>Audit-credible math.</strong> Citations on every duty answer.</span></li>
+          <li><span><strong>Local-first data.</strong> No cloud sync. No analytics tracking entries.</span></li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 5: WHY IT MATTERS (operator pain) -->
+  <!-- SLIDE 5: OPERATOR PAIN -->
   <section class="slide" data-slide="5">
     <div class="topbar">
-      <span class="brand-mark"><span class="dark">Import</span><span class="accent">Helm</span></span>
-      <span>05 · Why it exists</span>
+      <span class="brand-mark"><span class="light">Import</span><span class="accent">Helm</span></span>
+      <span>05 &nbsp;·&nbsp; Why it exists</span>
     </div>
     <span class="badge">From the operator's chair</span>
-    <h2>I built this because<br/><span class="accent">I needed it.</span></h2>
-    <p class="lead" style="margin-top: 14px; max-width: 1100px;">
-      Every importer asks their broker the same handful of questions on repeat — and every call is a billable hour your team didn't get back. The customer just wants an answer.
+    <h2>The five questions your team<br/>answers <span class="accent">every week.</span></h2>
+    <p class="lead" style="margin-top: 4px; max-width: 1100px;">
+      Every importer asks the same handful of questions on repeat. ImportHelm gives them a way to answer most of those themselves, in their pocket, anytime.
     </p>
-    <div class="pains">
-      <div class="pain">
-        <div class="pain-q">"What's our China exposure this quarter?"</div>
-        <div class="pain-a">→ Helm Bot answers from their imported shipment data. <strong>2 taps.</strong></div>
+    <div class="qa-grid">
+      <div class="qa">
+        <div class="qa-q">"What's our China exposure this quarter?"</div>
+        <div class="qa-a">Helm Bot answers from imported shipment data. <strong>Two taps.</strong></div>
       </div>
-      <div class="pain">
-        <div class="pain-q">"Did we miss a refund on last 90 days of entries?"</div>
-        <div class="pain-a">→ Refund Finder scans + categorizes. <strong>One CSV paste.</strong></div>
+      <div class="qa">
+        <div class="qa-q">"Did we miss a refund on the last 90 days?"</div>
+        <div class="qa-a">Refund Finder scans and categorizes. <strong>One CSV paste.</strong></div>
       </div>
-      <div class="pain">
-        <div class="pain-q">"Should we source this product from Vietnam or Mexico?"</div>
-        <div class="pain-a">→ Camera → HTS → Country Compare. <strong>The patent flow.</strong></div>
+      <div class="qa">
+        <div class="qa-q">"Should we source this from Vietnam or Mexico?"</div>
+        <div class="qa-a">Camera, HTS, Country Compare. <strong>The patent flow.</strong></div>
       </div>
-      <div class="pain">
-        <div class="pain-q">"Are my shipment docs in order?"</div>
-        <div class="pain-a">→ Compliance Checklist with link-pointer to <strong>your portal.</strong></div>
+      <div class="qa">
+        <div class="qa-q">"Are my shipment docs in order?"</div>
+        <div class="qa-a">Compliance Checklist with link-pointer to <strong>your portal.</strong></div>
       </div>
     </div>
   </section>
 
-  <!-- SLIDE 6: SOFT CLOSE -->
+  <!-- SLIDE 6: PARTNERSHIP CLOSE -->
   <section class="slide dark" data-slide="6">
     <div class="topbar">
-      <span class="brand-mark"><span class="dark">Import</span><span class="accent">Helm</span></span>
-      <span>06 · The next step</span>
+      <span class="brand-mark"><span class="light">Import</span><span class="accent">Helm</span></span>
+      <span>06 &nbsp;·&nbsp; Working together</span>
     </div>
-    <div style="margin-top: 36px;">
-      <span class="badge" style="background: rgba(10,132,255,0.2);">No pitch today</span>
+    <div style="margin-top: 24px;">
+      <span class="badge">Working together</span>
       <h2 style="color: white; max-width: 1100px;">
-        I'd love your <span class="accent">honest reaction.</span>
+        Adding ImportHelm to <span class="accent">your customer experience.</span>
       </h2>
-      <p class="lead" style="color: rgba(255,255,255,0.85); margin-top: 16px; max-width: 1000px;">
-        If ImportHelm is something your customers would find valuable, I'm happy to come back with some ideas on how it could plug into your network. For today, I just want you to see it.
+      <p class="lead" style="color: rgba(255,255,255,0.78); margin-top: 16px; max-width: 1080px;">
+        Your customers already trust your team for the licensed broker work. ImportHelm becomes their pocket co-pilot for everything in between. <strong>Faster answers for them, fewer interrupts for your team, more time for the work that requires you.</strong>
       </p>
     </div>
     <div class="close-grid">
       <div class="close-card accent">
-        <h3>Try it on your own phone</h3>
-        <p>I'll send you the TestFlight link — install it, poke around for a few days, then we'll talk again.</p>
-        <p class="small">
-          TestFlight: <strong>testflight.apple.com/join/3McjNyc1</strong><br/>
-          Access code: <strong>HELM2026</strong>
-        </p>
+        <h3>Step one</h3>
+        <p>Try it on your own phone. Install the TestFlight build, let it ride for a few days, then we'll talk.</p>
+        <div class="small">
+          TestFlight &nbsp;<strong>testflight.apple.com/join/3McjNyc1</strong><br/>
+          Access code &nbsp;<strong>HELM2026</strong>
+        </div>
       </div>
       <div class="close-card">
-        <h3>If you want a deeper conversation</h3>
-        <p>I'll come back with some channel-partnership ideas — promo code distribution, rev-share, co-design partner. No contracts today.</p>
-        <p class="small">
-          <strong>Kent Nunez</strong> · Founder, ImportHelm<br/>
-          SVLTMK LLC · kentnunez@yahoo.com<br/>
-          Patent Pending
-        </p>
+        <h3>Step two</h3>
+        <p>If your team finds it valuable, I'll come back with the right partnership shape for your network. A few options work, depending on what fits.</p>
+        <div class="small">
+          <strong>Kent Nunez</strong> &nbsp;·&nbsp; Founder, ImportHelm<br/>
+          SVLTMK LLC &nbsp;·&nbsp; kentnunez@yahoo.com<br/>
+          Patent pending
+        </div>
       </div>
     </div>
   </section>
 
   <nav class="nav" id="nav"></nav>
-  <div class="nav-hint">← → arrow keys · space · click dots · F for fullscreen</div>
+  <div class="nav-hint">← → arrows &nbsp;·&nbsp; space &nbsp;·&nbsp; F = fullscreen</div>
 </main>
 
 <script>
