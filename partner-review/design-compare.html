@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ImportHelm — Toolkit Design Compare</title>
+<style>
+  :root {
+    --ink: #050a14;
+    --ink-soft: #0f1729;
+    --muted: #475569;
+    --soft: #94a3b8;
+    --accent: #0a84ff;
+    --tint: #f0f6ff;
+    --bg: #0a1426;
+    --phone-bg: #000;
+    --screen: #0a0a0f;
+    --line: rgba(255,255,255,0.06);
+    --text: #f5f7fb;
+    --text-soft: #94a3b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    padding: 30px 20px 60px;
+  }
+  .container { max-width: 1400px; margin: 0 auto; }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  h1 .accent { color: var(--accent); }
+  .subtitle {
+    text-align: center;
+    color: var(--soft);
+    font-size: 14px;
+    margin-bottom: 36px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .option-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .option-label {
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .option-label .name {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    display: block;
+  }
+  .option-label .tag {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .option-label.recommended .tag {
+    color: #34d399;
+  }
+
+  /* iPhone frame */
+  .phone {
+    width: 340px;
+    height: 720px;
+    background: #1a1a1f;
+    border-radius: 48px;
+    padding: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+    position: relative;
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: var(--screen);
+    border-radius: 38px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .status-bar {
+    height: 32px;
+    padding: 10px 24px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .status-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .signal-icon {
+    font-size: 10px;
+  }
+  .notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 110px;
+    height: 28px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 10;
+  }
+
+  /* Header strip */
+  .header-strip {
+    padding: 6px 18px 14px;
+    margin-top: 4px;
+  }
+  .header-title {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.8px;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: var(--soft);
+    margin-top: 2px;
+  }
+
+  /* Content area */
+  .content {
+    flex: 1;
+    overflow: hidden;
+    padding: 0 14px;
+  }
+
+  /* ── OPTION A: GRID (current iPhone-style) ── */
+  .grid-section-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+    padding: 12px 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 4px;
+  }
+  .tile-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    position: relative;
+  }
+  .tile-label {
+    font-size: 10px;
+    color: var(--text);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* ── OPTION B: PURE LIST (à la Kent's image 2) ── */
+  .list-section-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+    padding: 14px 4px 10px;
+  }
+  .list-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .list-row:last-child { border-bottom: 0; }
+  .list-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .list-text { flex: 1; }
+  .list-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+  .list-desc {
+    font-size: 11px;
+    color: var(--soft);
+    margin-top: 1px;
+  }
+  .list-chevron {
+    color: var(--soft);
+    font-size: 14px;
+    opacity: 0.6;
+  }
+
+  /* ── OPTION C: HYBRID — Helm Picks grid on top + list below ── */
+  .hybrid-section-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+    padding: 12px 4px 8px;
+  }
+  .picks-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 14px 12px;
+    background: linear-gradient(180deg, #0f1729 0%, #0a0e1a 100%);
+    border-radius: 18px;
+    margin: 4px 0 8px;
+    border: 1px solid var(--line);
+  }
+  .picks-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .picks-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .picks-icon.pulse::after {
+    content: "";
+    position: absolute;
+    top: -2px; right: -2px;
+    width: 8px; height: 8px;
+    background: #34d399;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(52,211,153, 0.6);
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; }
+  }
+  .picks-label {
+    font-size: 9px;
+    color: var(--text);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.15;
+  }
+  .hybrid-list-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+    padding: 8px 4px 6px;
+  }
+
+  /* Bottom tab bar mock */
+  .tab-bar {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 16px 16px;
+    border-top: 1px solid var(--line);
+    background: rgba(15,23,41,0.6);
+    backdrop-filter: blur(20px);
+    margin-top: auto;
+  }
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    color: var(--soft);
+    font-weight: 600;
+  }
+  .tab .ti { font-size: 16px; }
+  .tab.active { color: var(--accent); }
+
+  /* Color palette for icons (matches the app's colorful tile pattern) */
+  .ic-blue { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); }
+  .ic-purple { background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%); }
+  .ic-teal { background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); }
+  .ic-green { background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); }
+  .ic-orange { background: linear-gradient(135deg, #f97316 0%, #c2410c 100%); }
+  .ic-red { background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%); }
+  .ic-yellow { background: linear-gradient(135deg, #eab308 0%, #a16207 100%); }
+  .ic-pink { background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); }
+  .ic-slate { background: linear-gradient(135deg, #64748b 0%, #334155 100%); }
+
+  .key-finding {
+    max-width: 1200px;
+    margin: 50px auto 0;
+    background: rgba(10, 132, 255, 0.1);
+    border: 1px solid rgba(10, 132, 255, 0.3);
+    border-radius: 14px;
+    padding: 24px 30px;
+  }
+  .key-finding h3 {
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .key-finding p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .key-finding strong { color: white; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Toolkit design <span class="accent">comparison</span></h1>
+  <p class="subtitle">
+    Three patterns side by side, using your real ImportHelm icons. Same tools, same colors, three layouts. Pick the one that looks like the app you want.
+  </p>
+
+  <div class="grid-3">
+
+    <!-- ═══ OPTION A: GRID (CURRENT) ═══ -->
+    <div class="option-col">
+      <div class="option-label">
+        <span class="name">Option A · Grid (current)</span>
+        <span class="tag">iPhone home-screen feel</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right"><span class="signal-icon">📶</span><span class="signal-icon">📡</span><span class="signal-icon">🔋</span></div>
+          </div>
+          <div class="header-strip">
+            <div class="header-title">Toolkit</div>
+            <div class="header-sub">170 tools · 10 categories</div>
+          </div>
+          <div class="content">
+            <div class="grid-section-title">⚡ Quick Answers</div>
+            <div class="tiles">
+              <div class="tile"><div class="tile-icon ic-purple">💬</div><div class="tile-label">AI Chat</div></div>
+              <div class="tile"><div class="tile-icon ic-green">🧮</div><div class="tile-label">Calculator</div></div>
+              <div class="tile"><div class="tile-icon ic-blue">🔍</div><div class="tile-label">Lookup</div></div>
+              <div class="tile"><div class="tile-icon ic-slate">📄</div><div class="tile-label">Docs</div></div>
+            </div>
+            <div class="grid-section-title">💰 Cost & Savings</div>
+            <div class="tiles">
+              <div class="tile"><div class="tile-icon ic-green">💵</div><div class="tile-label">Landed</div></div>
+              <div class="tile"><div class="tile-icon ic-blue">⚙️</div><div class="tile-label">Optimizer</div></div>
+              <div class="tile"><div class="tile-icon ic-purple">📊</div><div class="tile-label">Sourcing</div></div>
+              <div class="tile"><div class="tile-icon ic-orange">🏢</div><div class="tile-label">FTZ Calc</div></div>
+            </div>
+            <div class="grid-section-title">🛡 Compliance</div>
+            <div class="tiles">
+              <div class="tile"><div class="tile-icon ic-orange">✅</div><div class="tile-label">Compliance</div></div>
+              <div class="tile"><div class="tile-icon ic-yellow">⭐</div><div class="tile-label">Score</div></div>
+              <div class="tile"><div class="tile-icon ic-red">👁</div><div class="tile-label">Screening</div></div>
+              <div class="tile"><div class="tile-icon ic-green">🎗</div><div class="tile-label">FTA</div></div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab active"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ OPTION B: PURE LIST (À LA YOUR IMAGE 2) ═══ -->
+    <div class="option-col">
+      <div class="option-label">
+        <span class="name">Option B · Pure list</span>
+        <span class="tag">your image 2 reference</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right"><span class="signal-icon">📶</span><span class="signal-icon">📡</span><span class="signal-icon">🔋</span></div>
+          </div>
+          <div class="header-strip">
+            <div class="header-title">Toolkit</div>
+            <div class="header-sub">170 tools across 10 categories</div>
+          </div>
+          <div class="content">
+            <div class="list-row">
+              <div class="list-icon ic-yellow">⚡</div>
+              <div class="list-text">
+                <div class="list-name">Quick Answers</div>
+                <div class="list-desc">Lookups, chat, calculator</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row">
+              <div class="list-icon ic-green">💰</div>
+              <div class="list-text">
+                <div class="list-name">Cost & Savings</div>
+                <div class="list-desc">Duty, freight, margin math</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row">
+              <div class="list-icon ic-orange">🛡</div>
+              <div class="list-text">
+                <div class="list-name">Compliance</div>
+                <div class="list-desc">ISF, screening, AD/CVD, score</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row">
+              <div class="list-icon ic-red">📈</div>
+              <div class="list-text">
+                <div class="list-name">Tariff Intelligence</div>
+                <div class="list-desc">News, watch, alerts, exclusions</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row">
+              <div class="list-icon ic-teal">⚓</div>
+              <div class="list-text">
+                <div class="list-name">Logistics & Shipping</div>
+                <div class="list-desc">Containers, ports, transit</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row">
+              <div class="list-icon ic-purple">🌍</div>
+              <div class="list-text">
+                <div class="list-name">Country Guides</div>
+                <div class="list-desc">China, Mexico, Vietnam, India</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row">
+              <div class="list-icon ic-pink">🏷</div>
+              <div class="list-text">
+                <div class="list-name">Product Guides</div>
+                <div class="list-desc">Apparel, electronics, food</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row">
+              <div class="list-icon ic-green">↩</div>
+              <div class="list-text">
+                <div class="list-name">Refunds & Recovery</div>
+                <div class="list-desc">Refund Finder, drawback, protests</div>
+              </div>
+              <div class="list-chevron">›</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab active"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ OPTION C: HYBRID — Helm Picks grid + categories list ═══ -->
+    <div class="option-col">
+      <div class="option-label recommended">
+        <span class="name">Option C · Hybrid</span>
+        <span class="tag">★ recommended</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-right"><span class="signal-icon">📶</span><span class="signal-icon">📡</span><span class="signal-icon">🔋</span></div>
+          </div>
+          <div class="header-strip">
+            <div class="header-title">Toolkit</div>
+            <div class="header-sub">170 tools · 8 favorites pinned</div>
+          </div>
+          <div class="content">
+            <div class="hybrid-section-title">⭐ Helm Picks</div>
+            <div class="picks-grid">
+              <div class="picks-tile"><div class="picks-icon ic-blue pulse">📷</div><div class="picks-label">Camera</div></div>
+              <div class="picks-tile"><div class="picks-icon ic-slate pulse">📦</div><div class="picks-label">Container</div></div>
+              <div class="picks-tile"><div class="picks-icon ic-teal">🗺</div><div class="picks-label">Trade Map</div></div>
+              <div class="picks-tile"><div class="picks-icon ic-purple">🤖</div><div class="picks-label">Helm Bot</div></div>
+              <div class="picks-tile"><div class="picks-icon ic-green">💰</div><div class="picks-label">Refund</div></div>
+              <div class="picks-tile"><div class="picks-icon ic-yellow">⭐</div><div class="picks-label">Score</div></div>
+              <div class="picks-tile"><div class="picks-icon ic-blue">🌍</div><div class="picks-label">Compare</div></div>
+              <div class="picks-tile"><div class="picks-icon ic-orange">🔧</div><div class="picks-label">Engineer</div></div>
+            </div>
+            <div class="hybrid-list-title">All Categories</div>
+            <div class="list-row" style="padding: 9px 6px;">
+              <div class="list-icon ic-yellow" style="width:32px; height:32px; font-size:15px;">⚡</div>
+              <div class="list-text"><div class="list-name" style="font-size:13px;">Quick Answers</div></div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row" style="padding: 9px 6px;">
+              <div class="list-icon ic-green" style="width:32px; height:32px; font-size:15px;">💰</div>
+              <div class="list-text"><div class="list-name" style="font-size:13px;">Cost & Savings</div></div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row" style="padding: 9px 6px;">
+              <div class="list-icon ic-orange" style="width:32px; height:32px; font-size:15px;">🛡</div>
+              <div class="list-text"><div class="list-name" style="font-size:13px;">Compliance</div></div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row" style="padding: 9px 6px;">
+              <div class="list-icon ic-teal" style="width:32px; height:32px; font-size:15px;">⚓</div>
+              <div class="list-text"><div class="list-name" style="font-size:13px;">Logistics</div></div>
+              <div class="list-chevron">›</div>
+            </div>
+            <div class="list-row" style="padding: 9px 6px;">
+              <div class="list-icon ic-purple" style="width:32px; height:32px; font-size:15px;">🌍</div>
+              <div class="list-text"><div class="list-name" style="font-size:13px;">Country Guides</div></div>
+              <div class="list-chevron">›</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab active"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="key-finding">
+    <h3>★ My recommendation: Option C (hybrid)</h3>
+    <p>
+      Option A keeps your "iPhone home-screen" feel that you said you like, but it doesn't scale well across 170 tools (every category looks the same, hard to find what you need). Option B is the cleanest modern look but loses the iPhone home-screen identity entirely.
+      <br/><br/>
+      <strong>Option C keeps the colorful tile grid for the 8 flagship tools you'd actually tap most often (the patent flow, Helm Bot, Refund Finder, etc.) and switches to a clean list for the 10 categories below.</strong> The grid is fast for muscle memory. The list is calm for browsing the long tail. You get both.
+    </p>
+  </div>
+</div>
+</body>
+</html>
