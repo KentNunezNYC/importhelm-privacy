@@ -3,149 +3,246 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ImportHelm — App Review Brief</title>
+<title>ImportHelm</title>
 <style>
   :root {
-    --ink: #0f172a;
+    --ink: #0a1220;
     --muted: #475569;
     --soft: #94a3b8;
-    --bg: #ffffff;
     --line: #e2e8f0;
     --accent: #0a84ff;
-    --green: #16a34a;
+    --accent-deep: #0f4ea8;
     --gold: #f59e0b;
-    --gradient: linear-gradient(135deg, #0a84ff 0%, #6366f1 100%);
+    --tint: #f1f6fe;
+    --gradient: linear-gradient(135deg, #0a84ff 0%, #5b3bd4 100%);
   }
   * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body {
     margin: 0;
-    font-family: -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, "SF Pro Display", "Inter", "Helvetica Neue", Arial, sans-serif;
     color: var(--ink);
-    background: #f1f5f9;
-    line-height: 1.45;
+    background: #eef2f7;
+    line-height: 1.5;
+    font-feature-settings: "ss01", "cv11";
   }
   .page {
     width: 8.5in;
     min-height: 11in;
     margin: 24px auto;
-    padding: 0.45in 0.55in;
-    background: var(--bg);
-    box-shadow: 0 4px 20px rgba(15,23,42,.08);
+    padding: 0.55in 0.65in;
+    background: white;
+    box-shadow: 0 8px 30px rgba(15,23,42,.08);
+    position: relative;
+  }
+  .page::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: var(--gradient);
   }
   .row { display: flex; align-items: center; gap: 18px; }
   .row.between { justify-content: space-between; }
-  .header { border-bottom: 2px solid var(--ink); padding-bottom: 16px; margin-bottom: 22px; }
+  .header {
+    padding-bottom: 22px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+  }
   .brand {
-    font-size: 28px; font-weight: 900;
-    letter-spacing: -0.5px; margin: 0;
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -1.2px;
+    margin: 0;
   }
-  .brand .light { font-weight: 400; }
+  .brand .light { font-weight: 300; color: var(--ink); }
   .brand .accent { color: var(--accent); }
-  .tag { color: var(--muted); font-size: 13px; margin-top: 4px; }
-  .stamp {
-    background: #fef3c7; color: #92400e;
-    font-size: 10px; font-weight: 800;
-    letter-spacing: 0.5px; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 999px;
-    white-space: nowrap;
+  .tag {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+    letter-spacing: 0.1px;
   }
-  .stamp.patent { background: #dbeafe; color: #1e3a8a; }
-  .one-liner {
-    font-size: 20px; font-weight: 800;
-    line-height: 1.3; margin: 0 0 14px;
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--tint);
+    color: var(--accent-deep);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+  .stamp::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .headline {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+    margin: 0 0 8px;
     color: var(--ink);
   }
-  .one-liner .accent { color: var(--accent); }
+  .headline .accent { color: var(--accent); }
+  .subhead {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.55;
+    max-width: 6.5in;
+    margin: 0 0 24px;
+  }
   h2 {
-    font-size: 11px; text-transform: uppercase;
-    letter-spacing: 1.2px; color: var(--soft);
-    margin: 20px 0 8px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    color: var(--soft);
+    margin: 22px 0 12px;
     font-weight: 800;
   }
+
   /* Bio strip */
   .bio {
     display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 16px;
-    padding: 14px 18px;
-    background: #f8fafc;
+    grid-template-columns: 72px 1fr;
+    gap: 18px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, #f8fafe 0%, #ffffff 100%);
+    border-radius: 12px;
+    border: 1px solid var(--line);
     border-left: 4px solid var(--accent);
-    border-radius: 8px;
-    margin-bottom: 8px;
   }
   .bio-avatar {
     width: 56px; height: 56px;
-    border-radius: 50%;
+    border-radius: 14px;
     background: var(--gradient);
-    color: white; font-size: 22px;
-    font-weight: 900; letter-spacing: -1px;
-    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .bio-name { font-size: 15px; font-weight: 800; }
-  .bio-title { font-size: 12px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-  .bio-body { font-size: 12px; color: var(--muted); line-height: 1.45; }
-  .bio-body strong { color: var(--ink); }
-  /* Pillars */
+  .bio-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .bio-title {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .bio-body {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .bio-body strong { color: var(--ink); font-weight: 700; }
+
+  /* Layers (patent) */
   .pillars {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 12px;
   }
   .pillar {
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(180deg, #fafbfd 0%, #ffffff 100%);
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 12px;
-    background: #fafbfd;
+    position: relative;
+    overflow: hidden;
   }
   .pillar.featured {
+    background: linear-gradient(180deg, #eef5ff 0%, #ffffff 100%);
     border-color: var(--accent);
-    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
-    position: relative;
   }
   .pillar.featured::after {
     content: "MOAT";
     position: absolute;
-    top: 8px; right: 10px;
+    top: 12px; right: 12px;
     font-size: 8px;
     background: var(--gold);
     color: white;
-    font-weight: 800;
-    padding: 2px 6px;
+    font-weight: 900;
+    padding: 3px 7px;
     border-radius: 999px;
-    letter-spacing: 0.8px;
+    letter-spacing: 1px;
   }
   .pillar-icon {
-    width: 28px; height: 28px;
-    border-radius: 7px;
+    width: 30px; height: 30px;
+    border-radius: 9px;
     background: var(--gradient);
     color: white;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 900;
-    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-bottom: 10px;
   }
   .pillar-num {
-    font-size: 9px; font-weight: 800;
-    color: var(--soft); text-transform: uppercase;
-    letter-spacing: 1px; margin-bottom: 2px;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
   }
-  .pillar-title { font-weight: 800; font-size: 13px; margin: 0 0 4px; }
-  .pillar-body { font-size: 11.5px; color: var(--muted); margin: 0; line-height: 1.4; }
+  .pillar-title {
+    font-weight: 800;
+    font-size: 14px;
+    margin: 0 0 6px;
+    letter-spacing: -0.2px;
+  }
+  .pillar-body {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+  }
   .pillar-body strong { color: var(--ink); }
+
   /* Stats */
   .stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
-    margin: 6px 0;
+    margin: 8px 0 16px;
   }
   .stat {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 10px 12px;
-    background: #fafbfd;
+    text-align: center;
+    border-radius: 10px;
+    padding: 14px 10px;
+    background: var(--tint);
   }
-  .stat-value { font-size: 18px; font-weight: 900; color: var(--ink); }
-  .stat-label { font-size: 10px; color: var(--soft); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2px; }
+  .stat-value {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    line-height: 1;
+  }
+  .stat-value .accent { color: var(--accent); }
+  .stat-label {
+    font-size: 9.5px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
   /* Feature grid */
   .features {
     display: grid;
@@ -154,54 +251,84 @@
     margin-top: 4px;
   }
   .feat {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 10px 12px;
+    border-radius: 10px;
+    padding: 12px 14px;
     background: #fafbfd;
+    border: 1px solid var(--line);
   }
   .feat-title {
-    font-size: 10px; color: var(--accent);
-    font-weight: 800; letter-spacing: 1px;
+    font-size: 9.5px;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 1.2px;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .feat-body {
-    font-size: 11.5px; color: var(--muted);
-    line-height: 1.5;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.55;
   }
   .feat-body strong { color: var(--ink); }
+
+  /* Partnership block */
+  .partnership {
+    background: linear-gradient(135deg, var(--ink) 0%, #1e293b 100%);
+    color: white;
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-top: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .partnership::before {
+    content: "";
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 60%; height: 200%;
+    background: radial-gradient(circle, rgba(10,132,255,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .partnership-label {
+    font-size: 10px;
+    color: rgba(10,132,255,0.95);
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .partnership-title {
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.4px;
+    margin-bottom: 10px;
+    color: white;
+    position: relative;
+  }
+  .partnership-body {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+    position: relative;
+    margin: 0;
+  }
+  .partnership-body strong { color: white; }
+
   /* Footer */
   .footer {
-    margin-top: 16px;
+    margin-top: 22px;
     padding-top: 14px;
     border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between;
-    font-size: 11px; color: var(--soft);
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--soft);
   }
   .footer .brand-small { font-weight: 900; color: var(--ink); }
   .footer .accent { color: var(--accent); font-weight: 700; }
-  .soft-close {
-    background: #f0f7ff;
-    border: 1px solid var(--accent);
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-top: 12px;
-  }
-  .soft-close .label {
-    font-size: 10px;
-    color: var(--accent);
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .soft-close .body {
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--ink);
-    margin: 0;
-  }
-  .soft-close .body strong { color: var(--accent); }
+
   @media print {
     body { background: white; }
     .page { box-shadow: none; margin: 0; }
@@ -213,55 +340,58 @@
     <header class="header row between">
       <div>
         <h1 class="brand"><span class="light">Import</span><span class="accent">Helm</span></h1>
-        <div class="tag">A mobile import command center · Built by an operator</div>
+        <div class="tag">A mobile import command center, built by a 25-year operations leader.</div>
       </div>
       <div style="text-align:right;">
-        <span class="stamp patent">⚖ Patent Pending · SVLTMK LLC</span>
-        <div class="tag" style="margin-top:6px; font-size:11px;">
-          iOS TestFlight beta · Claude Sonnet 4.6
+        <span class="stamp">Patent Pending</span>
+        <div class="tag" style="margin-top:8px; font-size:11px;">
+          SVLTMK LLC · iOS TestFlight
         </div>
       </div>
     </header>
 
-    <p class="one-liner">
-      Every import question — answered in
-      <span class="accent">2 taps from the customer's pocket.</span>
+    <p class="headline">
+      Every import question answered in
+      <span class="accent">two taps from the customer's pocket.</span>
+    </p>
+    <p class="subhead">
+      ImportHelm gives your customers the pre-flight check they ask your team for ten times a week. Classify products from a photo, see which country offers the lowest landed cost, find recoverable refunds, and confirm shipment readiness. Without picking up the phone.
     </p>
 
     <h2>About the founder</h2>
     <div class="bio">
       <div class="bio-avatar">KN</div>
       <div>
-        <div class="bio-name">Kent Nunez</div>
         <div class="bio-title">Operator · Founder, SVLTMK LLC</div>
-        <p class="bio-body">
+        <div class="bio-name">Kent Nunez</div>
+        <p class="bio-body" style="margin-top:8px;">
           <strong>25+ years in operations leadership.</strong> Currently VP of Operations.
-          Deep experience across <strong>warehouses + inbound logistics, customs clearance workflows, drayage + container ops, demurrage + detention prevention, and full duty stack (§232/§301/IEEPA)</strong>.
+          Deep experience across <strong>warehouses, inbound logistics, customs clearance workflows, drayage and container operations, demurrage and detention prevention,</strong> and the <strong>full duty stack (§232, §301, §122 IEEPA).</strong>
           Author of <strong>"Lean Without Walls"</strong>, trained under Paul Akers in Japan lean methodology.
-          Built ImportHelm because the tools customs brokers use are great for their workflow — but the importer needs a pocket co-pilot, not an ERP.
+          ImportHelm was built from that operator's chair. The tools customs brokers use are great for the broker's workflow. The importer needs a pocket co-pilot, not an ERP.
         </p>
       </div>
     </div>
 
-    <h2>The 3 layers (Patent Pending)</h2>
+    <h2>The three layers (patent pending)</h2>
     <div class="pillars">
       <div class="pillar">
         <div class="pillar-icon">📷</div>
         <div class="pillar-num">Layer 1</div>
-        <div class="pillar-title">Camera → HTS</div>
-        <p class="pillar-body">Snap a product. Claude vision returns top-3 HTS codes in ~5 seconds with confidence + reasoning.</p>
+        <div class="pillar-title">Camera to HTS</div>
+        <p class="pillar-body">Snap a product. Claude vision returns the top-3 HTS codes in roughly 5 seconds with confidence percentages and reasoning. No spreadsheet. No broker call.</p>
       </div>
       <div class="pillar featured">
         <div class="pillar-icon">🌍</div>
         <div class="pillar-num">Layer 2</div>
-        <div class="pillar-title">HTS → Cheapest Country</div>
-        <p class="pillar-body">Same product modeled across China / Vietnam / Mexico / India / Korea — full duty stack per origin. <strong>No other app does this.</strong></p>
+        <div class="pillar-title">HTS to Cheapest Country</div>
+        <p class="pillar-body">Same product modeled across China, Vietnam, Mexico, India, and Korea. Full duty stack per origin, all sections layered correctly. <strong>No other import app does this today.</strong></p>
       </div>
       <div class="pillar">
         <div class="pillar-icon">🛠</div>
         <div class="pillar-num">Layer 3</div>
-        <div class="pillar-title">HTS → Tariff Engineering</div>
-        <p class="pillar-body">AI-suggested product modifications with citations — change materials to drop a chapter, save real money.</p>
+        <div class="pillar-title">HTS to Tariff Engineering</div>
+        <p class="pillar-body">AI suggests product modifications with citations. Change a binding from leather to canvas, drop one chapter, save real money on every unit going forward.</p>
       </div>
     </div>
 
@@ -276,44 +406,47 @@
       <div class="feat">
         <div class="feat-title">🤖 Pocket AI</div>
         <p class="feat-body">
-          <strong>Helm Bot</strong> — Claude Sonnet 4.6 concierge that answers from the user's own imported shipment data + 5 active CBP knowledge sources (CBP Importing Guide, 19 CFR 152/174/181, Country of Origin, Reasonable Care). Every regulatory answer ends with "Always verify with your customs broker before filing."
+          <strong>Helm Bot:</strong> Claude Sonnet 4.6 concierge that answers from the customer's own imported shipment data plus 5 active CBP knowledge sources (CBP Importing Guide, 19 CFR 152, 174, 181, Country of Origin Marking, Reasonable Care). Every regulatory answer ends with "always verify with your customs broker before filing."
         </p>
       </div>
       <div class="feat">
         <div class="feat-title">💰 Money tools</div>
         <p class="feat-body">
-          <strong>Refund Finder</strong> — 6 detection rules: FTA missed, §301 exclusion, CAPE-eligible IEEPA, Protest-required IEEPA, HTS reclass, First Sale. <strong>Calculator</strong> — full §232 three-tier + §301 + §122 + MPF/HMF. <strong>Schedule Brief</strong> — cron-backed weekly email digests.
+          <strong>Refund Finder:</strong> six detection rules covering FTA misses, §301 exclusions, CAPE-eligible IEEPA, Protest-required IEEPA, HTS reclassification, and First Sale candidates. <strong>Calculator:</strong> full §232 three-tier, §301, §122 IEEPA, MPF, HMF stack. <strong>Schedule Brief:</strong> weekly digests by email, no app open required.
         </p>
       </div>
       <div class="feat">
         <div class="feat-title">📋 Operations</div>
         <p class="feat-body">
-          <strong>Container Plan 3D</strong> — multi-container split + factory-ready PDF. <strong>Compliance Checklist</strong> — link-pointer to your portal, we never store the file. <strong>Trade Map · ISF · FTA · AD/CVD · Drawback</strong> — all on the phone.
+          <strong>Container Plan 3D:</strong> multi-container split with savings math and a factory-ready PDF. <strong>Compliance Checklist:</strong> paste a link to your portal, we never store the file. <strong>Trade Map, ISF, FTA Qualifier, AD/CVD, Drawback:</strong> all on the phone.
         </p>
       </div>
       <div class="feat">
         <div class="feat-title">🛡 Credibility built in</div>
         <p class="feat-body">
-          <strong>Audit-credible math</strong> on every duty answer. <strong>Local-first data</strong> — no cloud sync, no analytics tracking entries. <strong>Patent pending</strong> on the 3-layer flow. <strong>SVLTMK LLC</strong> is the publisher, separate entity, separate IP.
+          <strong>Audit-credible math</strong> on every duty answer. <strong>Local-first data</strong> stays on the customer's device. No cloud sync, no analytics tracking entries. <strong>Patent pending</strong> on the three-layer flow. SVLTMK LLC is the publisher, separate entity, separate IP.
         </p>
       </div>
     </div>
 
-    <div class="soft-close">
-      <div class="label">For today</div>
-      <p class="body">
-        No pitch — I'd just love your honest reaction. If ImportHelm is something your customers would find valuable, I'm happy to come back with some specific ideas on how it could plug into your network. Try the app on your own phone first.
+    <div class="partnership">
+      <div class="partnership-label">Working together</div>
+      <div class="partnership-title">
+        Adding ImportHelm to your customer experience
+      </div>
+      <p class="partnership-body">
+        Your customers already trust your team for the licensed broker work. ImportHelm becomes their pocket co-pilot for everything in between: the duty math, the country comparisons, the refund scan, the readiness check. <strong>Faster answers for them. Fewer interrupts for your team. More time for the work that actually requires you.</strong> A few partnership shapes work depending on what fits your network. After your team has lived with the app for a few days, I'll come back with the right one.
       </p>
     </div>
 
     <footer class="footer">
       <div>
-        <span class="brand-small">Kent Nunez</span> · SVLTMK LLC · ImportHelm founder<br/>
-        kentnunez@yahoo.com · TestFlight: <span class="accent">testflight.apple.com/join/3McjNyc1</span> · Code: <span class="accent">HELM2026</span>
+        <span class="brand-small">Kent Nunez</span> · Founder, ImportHelm · SVLTMK LLC<br/>
+        kentnunez@yahoo.com · TestFlight <span class="accent">testflight.apple.com/join/3McjNyc1</span> · Code <span class="accent">HELM2026</span>
       </div>
       <div style="text-align:right;">
-        Confidential · For discussion<br/>
-        Patent pending · SVLTMK LLC
+        Confidential. For discussion.<br/>
+        Patent pending. SVLTMK LLC.
       </div>
     </footer>
   </article>
