@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ImportHelm — Dashboard Redesign Mockup</title>
+<style>
+  :root {
+    --bg: #050810;
+    --text: #f5f7fb;
+    --soft: #94a3b8;
+    --muted: #475569;
+    --line: rgba(255,255,255,0.06);
+    --accent: #0a84ff;
+    --accent-bright: #38a3ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 30px 20px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  h1 .accent { color: var(--accent); }
+  .subtitle {
+    text-align: center;
+    color: var(--soft);
+    font-size: 14px;
+    margin-bottom: 36px;
+    max-width: 760px;
+    margin: 0 auto 36px;
+    line-height: 1.5;
+  }
+  .phones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .phone-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .option-label {
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .option-label .name {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    display: block;
+  }
+  .option-label .tag {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .option-label.new .tag { color: #34d399; }
+
+  /* iPhone */
+  .phone {
+    width: 380px;
+    height: 820px;
+    background: #1a1a1f;
+    border-radius: 54px;
+    padding: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #050a14 0%, #0a1426 100%);
+    border-radius: 42px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .status-bar {
+    height: 36px;
+    padding: 12px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .scroll {
+    flex: 1;
+    overflow: hidden;
+    padding: 8px 16px 60px;
+  }
+  .tab-bar {
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 18px 12px;
+    border-top: 1px solid var(--line);
+    background: rgba(15,23,41,0.85);
+  }
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+  .tab .ti { font-size: 18px; }
+  .tab.active { color: var(--accent); }
+
+  /* ── CURRENT DASHBOARD (left) ── */
+  .h-current {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    padding: 6px 4px 4px;
+  }
+  .sub-current {
+    font-size: 11px;
+    color: var(--soft);
+    padding: 0 4px 14px;
+  }
+  .kpi-row-current {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .kpi-current {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .kpi-current .label {
+    font-size: 10px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+  .kpi-current .value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .kpi-current .delta {
+    font-size: 10px;
+    color: #34d399;
+    margin-top: 2px;
+  }
+  .section-h-current {
+    font-size: 10px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    padding: 12px 4px 8px;
+  }
+  .list-row-current {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid var(--line);
+  }
+  .list-row-current .ic {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(10,132,255,0.2);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .list-row-current .txt {
+    flex: 1;
+    font-size: 12px;
+    color: var(--text);
+  }
+  .list-row-current .v {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── NEW MODERN DASHBOARD (right) ── */
+  .header-new {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 4px 4px 14px;
+  }
+  .header-new .title-block .greet {
+    font-size: 12px;
+    color: var(--soft);
+    font-weight: 500;
+  }
+  .header-new .title-block .title {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.8px;
+    margin-top: 2px;
+  }
+  .pro-badge {
+    background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+    color: white;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 1.4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  /* Time period tabs */
+  .period-tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+  .period-tab {
+    flex: 1;
+    text-align: center;
+    padding: 7px;
+    font-size: 11px;
+    color: var(--soft);
+    font-weight: 700;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+  }
+  .period-tab.active {
+    background: var(--text);
+    color: #0a1426;
+  }
+  /* Hero KPI cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .kpi {
+    border-radius: 18px;
+    padding: 16px 16px 18px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .kpi::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .kpi.blue { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+  .kpi.green { background: linear-gradient(135deg, #14532d 0%, #22c55e 100%); }
+  .kpi.purple { background: linear-gradient(135deg, #581c87 0%, #a855f7 100%); }
+  .kpi.orange { background: linear-gradient(135deg, #7c2d12 0%, #f97316 100%); }
+  .kpi .ic {
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-bottom: 12px;
+    border: 0.5px solid rgba(255,255,255,0.25);
+  }
+  .kpi .label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+  }
+  .kpi .value {
+    font-size: 26px;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -0.8px;
+    line-height: 1.1;
+    margin-top: 4px;
+  }
+  .kpi .value-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+  /* Trend bar chart */
+  .chart-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 14px;
+  }
+  .chart-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  .chart-value {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-top: 4px;
+  }
+  .chart-delta {
+    font-size: 11px;
+    color: #34d399;
+    font-weight: 700;
+    background: rgba(52,211,153,0.12);
+    padding: 4px 9px;
+    border-radius: 999px;
+  }
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 90px;
+    margin-bottom: 6px;
+  }
+  .bar {
+    flex: 1;
+    border-radius: 6px 6px 2px 2px;
+    background: linear-gradient(180deg, #a855f7 0%, #ec4899 100%);
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .bar.highlight {
+    background: linear-gradient(180deg, #f59e0b 0%, #ec4899 100%);
+  }
+  .bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: var(--soft);
+    font-weight: 600;
+    padding: 0 2px;
+  }
+  /* Country exposure card */
+  .exposure-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .exposure-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .exposure-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .exposure-flag {
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .exposure-name {
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 600;
+    min-width: 55px;
+  }
+  .exposure-bar-wrap {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .exposure-bar {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .exposure-pct {
+    font-size: 11px;
+    color: var(--text);
+    font-weight: 700;
+    min-width: 36px;
+    text-align: right;
+  }
+  /* Alert banner */
+  .alert-banner {
+    background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(245,158,11,0.25);
+  }
+  .alert-banner .ic {
+    font-size: 18px;
+  }
+  .alert-banner .txt {
+    flex: 1;
+    color: white;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .alert-banner .txt strong { font-weight: 800; }
+  .alert-banner .cta {
+    background: rgba(0,0,0,0.25);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  /* Compliance pillars */
+  .pillars-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .pillar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .pillar-row:last-child { border: 0; padding-bottom: 0; }
+  .pillar-row:first-of-type { padding-top: 0; }
+  .pillar-ic {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .pillar-ic.good { background: rgba(52,211,153,0.18); color: #34d399; }
+  .pillar-ic.warn { background: rgba(251,191,36,0.18); color: #fbbf24; }
+  .pillar-ic.danger { background: rgba(248,113,113,0.18); color: #f87171; }
+  .pillar-name { flex: 1; font-size: 12px; color: var(--text); font-weight: 600; }
+  .pillar-stars {
+    display: flex;
+    gap: 2px;
+  }
+  .pillar-star {
+    color: rgba(255,255,255,0.2);
+    font-size: 11px;
+  }
+  .pillar-star.on { color: #fbbf24; }
+
+  /* Notes section */
+  .key-finding {
+    max-width: 900px;
+    margin: 40px auto 0;
+    background: rgba(10,132,255,0.08);
+    border: 1px solid rgba(10,132,255,0.25);
+    border-radius: 14px;
+    padding: 22px 28px;
+  }
+  .key-finding h3 {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .key-finding p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .key-finding strong { color: white; }
+  .key-finding ul {
+    margin: 8px 0 0 22px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Dashboard <span class="accent">redesign</span></h1>
+  <p class="subtitle">
+    Left: roughly how the Dashboard renders today. Right: a redesign pulling the patterns you flagged from the activity/fitness apps. Vibrant gradient bars, big colorful KPI cards, time-period tabs, a banking-style alert banner, a compliance pulse grid. Same data we already have. Just way more modern.
+  </p>
+
+  <div class="phones">
+
+    <!-- ───── CURRENT DASHBOARD ───── -->
+    <div class="phone-col">
+      <div class="option-label">
+        <span class="name">Today's Dashboard</span>
+        <span class="tag">basic cards · info-dense</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div><span>📶 📡 🔋</span></div>
+          </div>
+          <div class="scroll">
+            <div class="h-current">Dashboard</div>
+            <div class="sub-current">Your import overview</div>
+            <div class="kpi-row-current">
+              <div class="kpi-current"><div class="label">Shipments</div><div class="value">54</div><div class="delta">+12 this month</div></div>
+              <div class="kpi-current"><div class="label">Freight</div><div class="value">$194K</div><div class="delta">+8% MoM</div></div>
+              <div class="kpi-current"><div class="label">Compliance</div><div class="value">82</div><div class="delta">↑ good</div></div>
+              <div class="kpi-current"><div class="label">Refund Opp</div><div class="value">$42K</div><div class="delta">7 candidates</div></div>
+            </div>
+            <div class="section-h-current">Active Alerts</div>
+            <div class="list-row-current"><div class="ic">⚠</div><div class="txt">3 shipments missing ISF docs</div><div class="v">›</div></div>
+            <div class="list-row-current"><div class="ic">⏱</div><div class="txt">CAPE window closes in 47 days</div><div class="v">›</div></div>
+            <div class="section-h-current">Quick Actions</div>
+            <div class="list-row-current"><div class="ic">📷</div><div class="txt">Classify a product</div><div class="v">›</div></div>
+            <div class="list-row-current"><div class="ic">💰</div><div class="txt">Run Refund Finder</div><div class="v">›</div></div>
+            <div class="list-row-current"><div class="ic">🌍</div><div class="txt">Compare countries</div><div class="v">›</div></div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab active"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── NEW MODERN DASHBOARD ───── -->
+    <div class="phone-col">
+      <div class="option-label new">
+        <span class="name">Modern Dashboard</span>
+        <span class="tag">★ inspired by your refs</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div><span>📶 📡 🔋</span></div>
+          </div>
+          <div class="scroll">
+            <div class="header-new">
+              <div class="title-block">
+                <div class="greet">Good evening, Kent</div>
+                <div class="title">Dashboard</div>
+              </div>
+              <div class="pro-badge">PATENT PENDING</div>
+            </div>
+
+            <div class="period-tabs">
+              <div class="period-tab">Week</div>
+              <div class="period-tab">Month</div>
+              <div class="period-tab active">Quarter</div>
+              <div class="period-tab">Year</div>
+            </div>
+
+            <div class="kpi-grid">
+              <div class="kpi blue">
+                <div class="ic">🚢</div>
+                <div class="label">Shipments</div>
+                <div class="value">54</div>
+                <div class="value-sub">↑ 12 this month</div>
+              </div>
+              <div class="kpi green">
+                <div class="ic">💰</div>
+                <div class="label">Recoverable</div>
+                <div class="value">$42K</div>
+                <div class="value-sub">7 refund candidates</div>
+              </div>
+              <div class="kpi purple">
+                <div class="ic">🌍</div>
+                <div class="label">Freight Q2</div>
+                <div class="value">$194K</div>
+                <div class="value-sub">↑ 8% vs Q1</div>
+              </div>
+              <div class="kpi orange">
+                <div class="ic">⭐</div>
+                <div class="label">Compliance</div>
+                <div class="value">82</div>
+                <div class="value-sub">6 of 7 pillars green</div>
+              </div>
+            </div>
+
+            <div class="alert-banner">
+              <div class="ic">⏱</div>
+              <div class="txt"><strong>CAPE window closes in 47 days.</strong> 7 entries eligible.</div>
+              <div class="cta">SCAN ›</div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-header">
+                <div>
+                  <div class="chart-title">Shipments by Month</div>
+                  <div class="chart-value">54</div>
+                </div>
+                <div class="chart-delta">+12 MoM</div>
+              </div>
+              <div class="bars">
+                <div class="bar" style="height: 30%;"></div>
+                <div class="bar" style="height: 45%;"></div>
+                <div class="bar" style="height: 55%;"></div>
+                <div class="bar" style="height: 38%;"></div>
+                <div class="bar" style="height: 72%;"></div>
+                <div class="bar highlight" style="height: 95%;"></div>
+                <div class="bar" style="height: 50%;"></div>
+              </div>
+              <div class="bar-labels">
+                <span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span>
+              </div>
+            </div>
+
+            <div class="exposure-card">
+              <div class="exposure-title">🌍 Origin Exposure</div>
+              <div class="exposure-row">
+                <span class="exposure-flag">🇨🇳</span>
+                <span class="exposure-name">China</span>
+                <div class="exposure-bar-wrap">
+                  <div class="exposure-bar" style="width: 59%; background: linear-gradient(90deg, #ef4444 0%, #f97316 100%);"></div>
+                </div>
+                <span class="exposure-pct">59%</span>
+              </div>
+              <div class="exposure-row">
+                <span class="exposure-flag">🇻🇳</span>
+                <span class="exposure-name">Vietnam</span>
+                <div class="exposure-bar-wrap">
+                  <div class="exposure-bar" style="width: 17%; background: linear-gradient(90deg, #14b8a6 0%, #06b6d4 100%);"></div>
+                </div>
+                <span class="exposure-pct">17%</span>
+              </div>
+              <div class="exposure-row">
+                <span class="exposure-flag">🇲🇽</span>
+                <span class="exposure-name">Mexico</span>
+                <div class="exposure-bar-wrap">
+                  <div class="exposure-bar" style="width: 11%; background: linear-gradient(90deg, #22c55e 0%, #84cc16 100%);"></div>
+                </div>
+                <span class="exposure-pct">11%</span>
+              </div>
+              <div class="exposure-row">
+                <span class="exposure-flag">🇮🇳</span>
+                <span class="exposure-name">India</span>
+                <div class="exposure-bar-wrap">
+                  <div class="exposure-bar" style="width: 7%; background: linear-gradient(90deg, #f97316 0%, #fbbf24 100%);"></div>
+                </div>
+                <span class="exposure-pct">7%</span>
+              </div>
+              <div class="exposure-row">
+                <span class="exposure-flag">🇰🇷</span>
+                <span class="exposure-name">Korea</span>
+                <div class="exposure-bar-wrap">
+                  <div class="exposure-bar" style="width: 4%; background: linear-gradient(90deg, #a855f7 0%, #ec4899 100%);"></div>
+                </div>
+                <span class="exposure-pct">4%</span>
+              </div>
+            </div>
+
+            <div class="pillars-card">
+              <div class="exposure-title">⭐ Compliance Pulse</div>
+              <div class="pillar-row">
+                <div class="pillar-ic good">✓</div>
+                <div class="pillar-name">Classification</div>
+                <div class="pillar-stars"><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star">★</span></div>
+              </div>
+              <div class="pillar-row">
+                <div class="pillar-ic good">✓</div>
+                <div class="pillar-name">Valuation</div>
+                <div class="pillar-stars"><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star">★</span></div>
+              </div>
+              <div class="pillar-row">
+                <div class="pillar-ic warn">!</div>
+                <div class="pillar-name">Country of Origin</div>
+                <div class="pillar-stars"><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star">★</span><span class="pillar-star">★</span></div>
+              </div>
+              <div class="pillar-row">
+                <div class="pillar-ic good">✓</div>
+                <div class="pillar-name">Records (5-yr)</div>
+                <div class="pillar-stars"><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star on">★</span></div>
+              </div>
+              <div class="pillar-row">
+                <div class="pillar-ic danger">⚠</div>
+                <div class="pillar-name">Reasonable Care</div>
+                <div class="pillar-stars"><span class="pillar-star on">★</span><span class="pillar-star on">★</span><span class="pillar-star">★</span><span class="pillar-star">★</span><span class="pillar-star">★</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab active"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="key-finding">
+    <h3>What's new on the right (and where each pattern comes from)</h3>
+    <p>
+      The redesigned Dashboard keeps every piece of data we already have but presents it the way the apps you flagged do. Specifically:
+    </p>
+    <ul>
+      <li><strong>Greeting + Patent Pending badge in the corner.</strong> The "PRO" badge pattern from your first image. Establishes credibility instantly.</li>
+      <li><strong>Time period tabs (Week / Month / Quarter / Year).</strong> The pill row from the activity apps. Lets you filter every chart and KPI in two taps.</li>
+      <li><strong>4 big colorful KPI cards with vibrant gradients.</strong> Blue / Green / Purple / Orange. Same data as today, way more visual. The top-edge reflection on each card matches our Liquid Glass aesthetic.</li>
+      <li><strong>Alert banner with action CTA.</strong> The Revolut-style orange promotional banner pattern, but applied to "your CAPE window closes in 47 days, scan now."</li>
+      <li><strong>Vibrant gradient bar chart.</strong> Purple-to-pink bars with the current month highlighted in orange-to-pink. Right out of your reference set.</li>
+      <li><strong>Origin Exposure bars.</strong> Each country flag + horizontal gradient bar showing percentage. Visual at-a-glance answer to "what's our China exposure?"</li>
+      <li><strong>Compliance Pulse with star ratings.</strong> The "Rewards Station" hierarchical card pattern, adapted for the 6 compliance pillars.</li>
+    </ul>
+    <p style="margin-top: 14px;">
+      Tech-feasibility note: every chart can be built with simple React Native primitives (View + LinearGradient + flex). No charting library needed. The bar chart is just rectangles with gradient backgrounds. Estimated build: 6-10 hours total for a real implementation.
+    </p>
+    <p style="margin-top: 10px;">
+      <strong>Caveat:</strong> right now the KPIs on the mockup show real numbers from your 54-shipment fixture. The actual Dashboard would pull the same data live from your imported shipments. If you have no data imported, the cards show the empty state we already have.
+    </p>
+  </div>
+</div>
+</body>
+</html>
