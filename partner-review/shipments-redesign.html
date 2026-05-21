@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ImportHelm — Shipments Redesign Mockup</title>
+<style>
+  :root {
+    --bg: #050810;
+    --text: #f5f7fb;
+    --soft: #94a3b8;
+    --muted: #475569;
+    --line: rgba(255,255,255,0.06);
+    --accent: #0a84ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 30px 20px 60px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  h1 .accent { color: var(--accent); }
+  .subtitle {
+    text-align: center;
+    color: var(--soft);
+    font-size: 14px;
+    margin: 0 auto 36px;
+    max-width: 760px;
+    line-height: 1.5;
+  }
+  .phones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .phone-col { display: flex; flex-direction: column; align-items: center; }
+  .option-label { margin-bottom: 14px; text-align: center; }
+  .option-label .name { font-size: 16px; font-weight: 800; color: var(--text); }
+  .option-label .tag { font-size: 11px; color: var(--soft); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; margin-top: 4px; }
+  .option-label.new .tag { color: #34d399; }
+
+  .phone {
+    width: 380px;
+    height: 820px;
+    background: #1a1a1f;
+    border-radius: 54px;
+    padding: 14px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #050a14 0%, #0a1426 100%);
+    border-radius: 42px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .status-bar {
+    height: 36px;
+    padding: 12px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .scroll { flex: 1; overflow: hidden; padding: 8px 16px 60px; }
+  .tab-bar {
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 18px 12px;
+    border-top: 1px solid var(--line);
+    background: rgba(15,23,41,0.85);
+  }
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+  }
+  .tab .ti { font-size: 18px; }
+  .tab.active { color: var(--accent); }
+
+  /* ──────── CURRENT SHIPMENTS ──────── */
+  .h-current {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    padding: 6px 4px 4px;
+  }
+  .tabs-current {
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 3px;
+    margin: 8px 0 14px;
+  }
+  .tab-pill-current {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    font-size: 11px;
+    color: var(--soft);
+    font-weight: 600;
+    border-radius: 6px;
+  }
+  .tab-pill-current.active { background: rgba(10,132,255,0.2); color: var(--accent); }
+  .kpi-row-current {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .kpi-current {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .kpi-current .v { font-size: 18px; font-weight: 800; color: var(--text); }
+  .kpi-current .l { font-size: 9px; color: var(--soft); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .port-strip-current {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  .port-chip-current {
+    background: rgba(245,158,11,0.15);
+    border-radius: 8px;
+    padding: 6px 10px;
+    flex-shrink: 0;
+  }
+  .port-chip-current .n { font-size: 10px; color: var(--text); font-weight: 700; }
+  .port-chip-current .v { font-size: 10px; color: #fbbf24; font-weight: 600; }
+  .search-current {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 11px;
+    color: var(--soft);
+    margin-bottom: 12px;
+  }
+  .ship-card-current {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .ship-card-current .ref { font-size: 11px; color: var(--soft); margin-bottom: 4px; }
+  .ship-card-current .route { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 6px; }
+  .ship-card-current .meta { font-size: 10px; color: var(--soft); }
+
+  /* ──────── NEW MODERN SHIPMENTS ──────── */
+  .header-new {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 4px 4px 12px;
+  }
+  .header-new .greet {
+    font-size: 12px;
+    color: var(--soft);
+    font-weight: 500;
+  }
+  .header-new .title {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -0.8px;
+    margin-top: 2px;
+  }
+  .live-badge {
+    background: rgba(52,211,153,0.18);
+    color: #34d399;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .live-badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: #34d399;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(52,211,153,0.3);
+    animation: pulse 1.6s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+  .tabs-new {
+    display: flex;
+    gap: 4px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 999px;
+    padding: 3px;
+    margin-bottom: 14px;
+  }
+  .tab-pill-new {
+    flex: 1;
+    text-align: center;
+    padding: 7px;
+    font-size: 11px;
+    color: var(--soft);
+    font-weight: 700;
+  }
+  .tab-pill-new.active {
+    background: var(--text);
+    color: #0a1426;
+    border-radius: 999px;
+  }
+  /* Hero status grid */
+  .status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .status-card {
+    border-radius: 14px;
+    padding: 12px 8px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .status-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+    pointer-events: none;
+  }
+  .status-card.blue { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+  .status-card.purple { background: linear-gradient(135deg, #581c87 0%, #a855f7 100%); }
+  .status-card.orange { background: linear-gradient(135deg, #7c2d12 0%, #f97316 100%); }
+  .status-card.green { background: linear-gradient(135deg, #14532d 0%, #22c55e 100%); }
+  .status-card .v { font-size: 22px; font-weight: 900; color: white; letter-spacing: -0.5px; line-height: 1; }
+  .status-card .l { font-size: 9px; color: rgba(255,255,255,0.85); margin-top: 5px; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; }
+
+  /* ETA timeline */
+  .eta-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .eta-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .eta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .eta-row:last-child { margin-bottom: 0; }
+  .eta-bar-bg {
+    flex: 1;
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .eta-bar {
+    height: 100%;
+    border-radius: 5px;
+  }
+  .eta-week .eta-bar { background: linear-gradient(90deg, #ef4444 0%, #f97316 100%); width: 15%; }
+  .eta-month .eta-bar { background: linear-gradient(90deg, #f97316 0%, #fbbf24 100%); width: 28%; }
+  .eta-quarter .eta-bar { background: linear-gradient(90deg, #22c55e 0%, #14b8a6 100%); width: 63%; }
+  .eta-label { font-size: 11px; color: var(--text); font-weight: 600; min-width: 90px; }
+  .eta-value { font-size: 13px; color: var(--text); font-weight: 800; min-width: 28px; text-align: right; }
+
+  /* Port pulse strip */
+  .ports-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .ports-title {
+    font-size: 11px;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .ports-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .port-tile {
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+  }
+  .port-tile.warn { border-color: rgba(251,191,36,0.3); }
+  .port-tile.danger { border-color: rgba(248,113,113,0.4); }
+  .port-name { font-size: 10px; color: var(--text); font-weight: 700; }
+  .port-dwell { font-size: 16px; font-weight: 900; color: var(--text); margin-top: 4px; line-height: 1; }
+  .port-dwell.warn { color: #fbbf24; }
+  .port-dwell.danger { color: #f87171; }
+  .port-unit { font-size: 9px; color: var(--soft); margin-top: 2px; }
+
+  /* Shipment row card */
+  .ship-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ship-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+  }
+  .ship-card.in-transit::before { background: #3b82f6; }
+  .ship-card.customs::before { background: #f59e0b; }
+  .ship-card.delivered::before { background: #22c55e; }
+  .ship-row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .ship-ref { font-size: 11px; color: var(--soft); font-weight: 600; }
+  .ship-status-pill {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .ship-status-pill.in-transit { background: rgba(59,130,246,0.15); color: #60a5fa; }
+  .ship-status-pill.customs { background: rgba(245,158,11,0.15); color: #fbbf24; }
+  .ship-status-pill.delivered { background: rgba(34,197,94,0.15); color: #4ade80; }
+  .ship-route {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+  }
+  .ship-meta {
+    display: flex;
+    gap: 14px;
+    font-size: 10px;
+    color: var(--soft);
+    font-weight: 600;
+  }
+  .ship-meta strong { color: var(--text); }
+  .ship-progress {
+    margin-top: 10px;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .ship-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+  .ship-card.in-transit .ship-progress-fill {
+    width: 65%;
+    background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+  }
+  .ship-card.customs .ship-progress-fill {
+    width: 88%;
+    background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+  }
+  .ship-card.delivered .ship-progress-fill {
+    width: 100%;
+    background: linear-gradient(90deg, #22c55e 0%, #4ade80 100%);
+  }
+
+  /* Findings panel */
+  .key-finding {
+    max-width: 900px;
+    margin: 40px auto 0;
+    background: rgba(10,132,255,0.08);
+    border: 1px solid rgba(10,132,255,0.25);
+    border-radius: 14px;
+    padding: 22px 28px;
+  }
+  .key-finding h3 {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .key-finding p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .key-finding ul {
+    margin: 8px 0 0 22px;
+    padding: 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .key-finding strong { color: white; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Shipments <span class="accent">redesign</span></h1>
+  <p class="subtitle">
+    Left: roughly today's Shipments tab. Right: same data with the Liquid Glass + activity-app data viz patterns. Status hero, ETA bar chart, port pulse grid, accent-bordered shipment cards with progress bars.
+  </p>
+
+  <div class="phones">
+
+    <!-- ───── CURRENT ───── -->
+    <div class="phone-col">
+      <div class="option-label">
+        <span class="name">Today's Shipments</span>
+        <span class="tag">flat cards · text-heavy</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div><span>📶 📡 🔋</span></div>
+          </div>
+          <div class="scroll">
+            <div class="h-current">Shipments</div>
+            <div class="tabs-current">
+              <div class="tab-pill-current active">Tracking</div>
+              <div class="tab-pill-current">Route Advisor</div>
+            </div>
+            <div class="kpi-row-current">
+              <div class="kpi-current"><div class="v">12</div><div class="l">Active</div></div>
+              <div class="kpi-current"><div class="v">12</div><div class="l">In Transit</div></div>
+              <div class="kpi-current"><div class="v">9</div><div class="l">At Port</div></div>
+              <div class="kpi-current"><div class="v">58</div><div class="l">Containers</div></div>
+            </div>
+            <div class="port-strip-current">
+              <div class="port-chip-current"><div class="n">Long Beach</div><div class="v">2.1d avg</div></div>
+              <div class="port-chip-current"><div class="n">Los Angeles</div><div class="v">3.4d avg</div></div>
+              <div class="port-chip-current"><div class="n">Savannah</div><div class="v">0.8d avg</div></div>
+            </div>
+            <div class="search-current">🔍  Search by container, vessel, port...</div>
+            <div class="ship-card-current">
+              <div class="ref">PTI-2026-0610</div>
+              <div class="route">🇨🇳 Shanghai → 🇺🇸 Long Beach</div>
+              <div class="meta">In Transit · ETA May 31 · 1× 40HC</div>
+            </div>
+            <div class="ship-card-current">
+              <div class="ref">PTI-2026-0521</div>
+              <div class="route">🇨🇳 Yantian → 🇺🇸 Los Angeles</div>
+              <div class="meta">Customs · ETA May 15 · 1× 40HC</div>
+            </div>
+            <div class="ship-card-current">
+              <div class="ref">PTI-2026-0511</div>
+              <div class="route">🇨🇳 Shanghai → 🇺🇸 Long Beach</div>
+              <div class="meta">Delivered · May 1 · 1× 40HC</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab active"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── NEW MODERN ───── -->
+    <div class="phone-col">
+      <div class="option-label new">
+        <span class="name">Modern Shipments</span>
+        <span class="tag">★ liquid glass + data viz</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div><span>📶 📡 🔋</span></div>
+          </div>
+          <div class="scroll">
+            <div class="header-new">
+              <div>
+                <div class="greet">54 active, 8 arriving this week</div>
+                <div class="title">Shipments</div>
+              </div>
+              <div class="live-badge">LIVE</div>
+            </div>
+
+            <div class="tabs-new">
+              <div class="tab-pill-new active">All</div>
+              <div class="tab-pill-new">In Transit</div>
+              <div class="tab-pill-new">At Port</div>
+              <div class="tab-pill-new">Customs</div>
+            </div>
+
+            <div class="status-grid">
+              <div class="status-card blue"><div class="v">12</div><div class="l">In Transit</div></div>
+              <div class="status-card orange"><div class="v">9</div><div class="l">At Port</div></div>
+              <div class="status-card purple"><div class="v">8</div><div class="l">Customs</div></div>
+              <div class="status-card green"><div class="v">15</div><div class="l">Delivered</div></div>
+            </div>
+
+            <div class="eta-card">
+              <div class="eta-title">⏱ Arrivals by Window</div>
+              <div class="eta-row eta-week">
+                <div class="eta-label">This week</div>
+                <div class="eta-bar-bg"><div class="eta-bar"></div></div>
+                <div class="eta-value">8</div>
+              </div>
+              <div class="eta-row eta-month">
+                <div class="eta-label">This month</div>
+                <div class="eta-bar-bg"><div class="eta-bar"></div></div>
+                <div class="eta-value">15</div>
+              </div>
+              <div class="eta-row eta-quarter">
+                <div class="eta-label">This quarter</div>
+                <div class="eta-bar-bg"><div class="eta-bar"></div></div>
+                <div class="eta-value">34</div>
+              </div>
+            </div>
+
+            <div class="ports-card">
+              <div class="ports-title">🚢 Port Pulse · Avg Dwell</div>
+              <div class="ports-grid">
+                <div class="port-tile">
+                  <div class="port-name">Long Beach</div>
+                  <div class="port-dwell">2.1</div>
+                  <div class="port-unit">days</div>
+                </div>
+                <div class="port-tile danger">
+                  <div class="port-name">Los Angeles</div>
+                  <div class="port-dwell danger">3.4</div>
+                  <div class="port-unit">days</div>
+                </div>
+                <div class="port-tile">
+                  <div class="port-name">Savannah</div>
+                  <div class="port-dwell">0.8</div>
+                  <div class="port-unit">days</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ship-card in-transit">
+              <div class="ship-row-top">
+                <div class="ship-ref">PTI-2026-0610 · 1× 40HC</div>
+                <div class="ship-status-pill in-transit">In Transit</div>
+              </div>
+              <div class="ship-route">🇨🇳 Shanghai → 🇺🇸 Long Beach</div>
+              <div class="ship-meta">
+                <span>ETA <strong>May 31</strong></span>
+                <span>Day <strong>10 / 16</strong></span>
+                <span>MSC</span>
+              </div>
+              <div class="ship-progress"><div class="ship-progress-fill"></div></div>
+            </div>
+            <div class="ship-card customs">
+              <div class="ship-row-top">
+                <div class="ship-ref">PTI-2026-0521 · 1× 40HC</div>
+                <div class="ship-status-pill customs">Customs</div>
+              </div>
+              <div class="ship-route">🇨🇳 Yantian → 🇺🇸 Los Angeles</div>
+              <div class="ship-meta">
+                <span>Arrived <strong>May 15</strong></span>
+                <span>Day <strong>5 / 6</strong></span>
+                <span>Maersk</span>
+              </div>
+              <div class="ship-progress"><div class="ship-progress-fill"></div></div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ti">🏠</span><span>Home</span></div>
+            <div class="tab"><span class="ti">📊</span><span>Dashboard</span></div>
+            <div class="tab active"><span class="ti">🚢</span><span>Ships</span></div>
+            <div class="tab"><span class="ti">📷</span><span>Classify</span></div>
+            <div class="tab"><span class="ti">🧰</span><span>Toolkit</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="key-finding">
+    <h3>What changes on the right</h3>
+    <p>Same data we already have. Same shipment records. Just laid out with the Liquid Glass and activity-app patterns that worked on Toolkit:</p>
+    <ul>
+      <li><strong>Greeting line + LIVE badge.</strong> "54 active, 8 arriving this week" instead of a static title. Live pulse dot says "data is current."</li>
+      <li><strong>4 vibrant status cards.</strong> Blue/Orange/Purple/Green for In Transit/At Port/Customs/Delivered. Big counts with top-edge glass shine.</li>
+      <li><strong>Arrivals by Window bar chart.</strong> Visual answer to "what arrives this week vs month vs quarter." Red/orange/teal gradient bars.</li>
+      <li><strong>Port Pulse grid.</strong> Today's avg dwell time per port. LA highlighted red because it's slow. Operator answers "where will my container get stuck" in two taps.</li>
+      <li><strong>Shipment cards with colored left border + status pill + progress bar.</strong> Blue border for In Transit, orange for Customs, green for Delivered. Progress bar shows how far along the route they are.</li>
+    </ul>
+    <p style="margin-top: 14px;">
+      Tech-feasibility: every chart is just Views + LinearGradient. Same as Dashboard. No charting library. Estimated 6-8 hours to implement end-to-end including swapping the existing ScrollView for FlatList virtualization on the shipment list.
+    </p>
+  </div>
+</div>
+</body>
+</html>
