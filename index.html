@@ -130,20 +130,6 @@
             text-decoration: underline;
         }
 
-        .beta-badge {
-            display: inline-block;
-            background-color: rgba(10, 132, 255, 0.15);
-            color: #0A84FF;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 12px;
-            margin-left: 8px;
-            vertical-align: middle;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
         .contact-box {
             background-color: #161B22;
             border-radius: 8px;
@@ -200,92 +186,99 @@
         </div>
 
         <h1>Privacy Policy</h1>
-        <p class="effective-date">Effective Date: April 29, 2026 &middot; Last updated: April 29, 2026</p>
+        <p class="effective-date">Effective Date: June 6, 2026 &middot; Last updated: June 6, 2026</p>
 
         <div class="intro">
-            SVLTMK LLC ("we," "our," or "us") operates the ImportHelm mobile application. This Privacy Policy explains what information ImportHelm handles, where it is stored, and which third-party services we use to deliver the app's features. We aim to keep this document accurate and current with how the app actually behaves.
+            SVLTMK LLC ("we," "our," or "us") makes the ImportHelm mobile app for iPhone. ImportHelm is built local-first. Most of your work stays on your device. A small number of features send what you submit to our backend so we can return a result. This page explains exactly what is handled, where it goes, and which services we use. We keep it accurate to how the app actually behaves.
         </div>
 
-        <h2><span class="section-number">1.</span> Information You Provide</h2>
+        <div class="highlight">
+            <p><strong>The short version.</strong> We do not sell your data. We run no ads and no ad tracking. Your import records stay on your device by default. AI features send what you submit (a photo, a question) to our processor to return a result, then the result comes back to you. You can erase all app data anytime in Settings.</p>
+        </div>
+
+        <h2><span class="section-number">1.</span> Information in the App</h2>
         <p>ImportHelm is built around data you choose to enter:</p>
         <ul>
-            <li><strong>Import-management data</strong> &mdash; products, HTS codes, suppliers, shipments, broker records, costs, refund claims, and any notes you create. By default this data is stored on your device.</li>
-            <li><strong>Photos &amp; documents</strong> &mdash; if you use the photo classification, document OCR, or container-camera features, images you capture are sent to our processing services to extract information (HTS suggestions, invoice fields, package dimensions). Images are not retained for training.</li>
-            <li><strong>AI chat messages</strong> &mdash; questions you type into the in-app AI Chat are sent to our AI provider to generate the answer. Conversations are stored locally on your device.</li>
-            <li><strong>Refund Finder uploads</strong> &mdash; CSV entry data you upload is sent to our analysis service to detect refund eligibility, then results are returned to your device.</li>
+            <li><strong>Import-management data</strong> - products, HTS codes, suppliers, shipments, broker records, costs, refund claims, and notes. This is stored on your device.</li>
+            <li><strong>Photos for classification</strong> - if you use the photo classifier or the container planner, the image you capture is sent to our backend and AI processor to suggest HTS codes or estimate dimensions. Photos are not retained to train AI models.</li>
+            <li><strong>Helm Bot (AI chat)</strong> - your typed question is sent to our AI processor to generate an answer. To make answers relevant, the app may also send your profile (a first name if you entered one, plus role, company, industry, and sourcing) and a short summary of your own shipments (counts, top origin countries, top vendors, and dollar totals). Your full chat history and your raw shipment records stay on your device.</li>
+            <li><strong>Tariff Engineer</strong> - the product details you submit (HTS code, description, duty rate, volume, value, sourcing country, and an optional photo) are sent to our AI processor to suggest duty-reduction options with citations.</li>
+            <li><strong>Email (optional)</strong> - if you sign up for The Helm newsletter or an email digest, your email address is stored so we can send it. You can unsubscribe at any time.</li>
         </ul>
+
+        <h2><span class="section-number">2.</span> Anonymous Device ID</h2>
+        <p>The app creates a random, anonymous ID and stores it on your device. It is sent with AI and usage requests so we can count your monthly usage against your plan limits and keep the service reliable. It is not your name, not your Apple ID, and not the advertising identifier (IDFA). It is never used for advertising or for tracking you across other apps. It is removed when you delete the app.</p>
+
+        <h2><span class="section-number">3.</span> What We Do Not Collect</h2>
         <div class="highlight">
-            <p><strong>What we do NOT collect:</strong> we do not request bank account numbers, credit card numbers, social security numbers, government IDs, or biometric data. We do not run advertising, ad tracking, or third-party analytics SDKs (e.g., Facebook SDK, Google Analytics).</p>
+            <p>We do not collect bank account numbers, credit card numbers, Social Security numbers, government IDs, or biometric data. We do not use the advertising identifier (IDFA), we do not track you across other apps or websites, and we do not work with ad networks or data brokers. We do not sell or rent your information to anyone.</p>
         </div>
 
-        <h2><span class="section-number">2.</span> How We Use Information</h2>
-        <p>Information is used solely to deliver the features you trigger:</p>
+        <h2><span class="section-number">4.</span> Where Data Is Stored</h2>
         <ul>
-            <li>Calculating duties, landed costs, and refund estimates</li>
-            <li>Classifying products from photos or descriptions</li>
-            <li>Extracting fields from invoices, bills of lading, and packing lists</li>
-            <li>Tracking shipments, deadlines, and compliance status you enter</li>
-            <li>Providing intelligent answers in the AI Chat</li>
-            <li>Diagnosing crashes and stability issues to improve reliability</li>
-        </ul>
-        <p>We do not sell your data, share it with advertisers, or use it to build profiles outside of delivering ImportHelm features.</p>
-
-        <h2><span class="section-number">3.</span> Where Data Is Stored</h2>
-        <p>The vast majority of your data lives on your device:</p>
-        <ul>
-            <li><strong>On-device (AsyncStorage)</strong> &mdash; products, shipments, refund claims, AI chat history, calculator inputs, and your settings. If you uninstall the app, this data is deleted.</li>
-            <li><strong>Backend processing</strong> &mdash; photos sent for classification, CSV entries sent for refund analysis, and AI Chat prompts are processed by our backend (Supabase Edge Functions) and AI provider, then results return to your device. Photos and uploaded entries are not stored long-term in our backend.</li>
-            <li><strong>Crash reports</strong> &mdash; anonymized crash details (stack traces, app version, OS version) are sent to our error-monitoring service so we can fix bugs.</li>
+            <li><strong>On your device</strong> - products, shipments, refund work, chat history, calculator inputs, favorites, and settings are stored on your device. If you delete the app, this data is deleted with it.</li>
+            <li><strong>Our backend (Supabase)</strong> - photos, AI questions, and the details listed in Section 1 pass through our backend functions to our AI processor, and the result returns to you. We keep anonymous usage records (the device ID, your monthly feature counts, and processing cost) to enforce plan limits and watch reliability. Email signups are stored. Photos and prompts are not kept long-term and are not used to train AI models.</li>
+            <li><strong>Runs on your device, not our servers</strong> - the document scanner and the Refund Finder analysis run entirely on your device. Your scanned documents and the entry data you load into Refund Finder are not sent to our servers.</li>
         </ul>
 
-        <h2><span class="section-number">4.</span> Camera &amp; Photo Permissions</h2>
-        <p>ImportHelm requests the following device permissions only when needed:</p>
+        <h2><span class="section-number">5.</span> Service Providers</h2>
+        <p>We use a small set of providers to deliver the app. Each is listed with the role it plays:</p>
         <ul>
-            <li><strong>Camera access</strong> &mdash; for photographing products (HTS classification), documents (OCR), and items being packed into containers (auto-fill dimensions). Camera access is only triggered when you explicitly use one of these features.</li>
-            <li><strong>Photo library access</strong> &mdash; for selecting existing photos from your device for the same features. We do not browse or read your photo library outside of files you actively pick.</li>
+            <li><strong>Anthropic</strong> - the AI processor behind the photo classifier, Helm Bot, and Tariff Engineer. The photos, questions, and product details you submit to those features are sent to Anthropic to produce a result. Anthropic does not retain submissions to train its models. (<a href="https://www.anthropic.com/legal/privacy">anthropic.com/legal/privacy</a>)</li>
+            <li><strong>Supabase</strong> - our backend, which runs the functions that route AI requests and store the anonymous usage records and email signups. (<a href="https://supabase.com/privacy">supabase.com/privacy</a>)</li>
+            <li><strong>Sentry</strong> - crash monitoring and limited product analytics. Sentry receives crash stack traces with app, OS, and device-model details. It also records a sampled session replay (roughly one in ten app sessions, plus sessions where an error happens) that captures in-app screens and interactions so we can find and fix bugs, and it receives counts of which features are used. We configure Sentry not to send default personal identifiers (no IP address, cookies, or account IDs), and none of this is used for advertising or cross-app tracking. (<a href="https://sentry.io/privacy/">sentry.io/privacy</a>)</li>
+            <li><strong>Resend</strong> - delivers the newsletter and email digests you opt into. It receives your email address only for that delivery. (<a href="https://resend.com/legal/privacy-policy">resend.com/legal/privacy-policy</a>)</li>
+            <li><strong>Expo</strong> - delivers over-the-air app updates. The app checks Expo's update service on launch. (<a href="https://expo.dev/privacy">expo.dev/privacy</a>)</li>
+            <li><strong>Apple</strong> - the App Store and In-App Purchases. If you subscribe, Apple handles the payment and we receive only that an active subscription exists, never your card or billing details. (<a href="https://www.apple.com/legal/privacy/">apple.com/legal/privacy</a>)</li>
         </ul>
-        <p>You can revoke these permissions at any time in your device's Settings. The app continues to work without camera or photo access; only the photo-driven features become unavailable.</p>
+        <p>All providers process only what is needed to run their part of the app and are bound by their own data-processing terms. We do not embed advertising SDKs.</p>
 
-        <h2><span class="section-number">5.</span> Third-Party Service Providers</h2>
-        <p>ImportHelm uses a small set of vendors to deliver core features. Each is listed below with the role it plays:</p>
+        <h2><span class="section-number">6.</span> Subscriptions and Payments</h2>
+        <p>ImportHelm offers one optional paid plan, ImportHelm Pro, at $29.99 per month with a 7-day free trial, processed entirely through Apple's In-App Purchase system. We receive only your subscription status (active or not) confirmed through Apple's receipt check. We never receive your credit card, billing address, or banking information. You can manage or cancel a subscription in your device under Settings, then Apple ID, then Subscriptions. Refund requests are handled by Apple under Apple's policy.</p>
+
+        <h2><span class="section-number">7.</span> Camera, Photos, and Microphone</h2>
+        <p>ImportHelm asks for device permissions only when a feature needs them:</p>
         <ul>
-            <li><strong>Anthropic</strong> &mdash; AI provider for the photo classifier, the in-app AI Chat, and the document OCR pipelines. Photos, prompts, and document images you submit are sent to Anthropic for processing. Anthropic does not retain submissions for training. (<a href="https://www.anthropic.com/privacy">anthropic.com/privacy</a>)</li>
-            <li><strong>Supabase</strong> &mdash; backend infrastructure for the Edge Functions that route photos to the classifier, run the Refund Finder analysis on uploaded CSVs, and proxy AI requests. (<a href="https://supabase.com/privacy">supabase.com/privacy</a>)</li>
-            <li><strong>Sentry</strong> &mdash; crash and error monitoring. Anonymized crash reports are sent so we can fix bugs. We do not configure Sentry to send PII; only stack traces and device/app metadata. (<a href="https://sentry.io/privacy/">sentry.io/privacy</a>)</li>
-            <li><strong>Apple App Store / In-App Purchases</strong> &mdash; if you subscribe to a paid tier (Pro, Team), purchase processing is handled by Apple; we do not see your payment details, only that an active subscription exists for your Apple ID. (<a href="https://www.apple.com/legal/privacy/">apple.com/legal/privacy</a>)</li>
+            <li><strong>Camera</strong> - to photograph products for HTS classification or items for the container planner. Used only when you open one of those features.</li>
+            <li><strong>Photo library</strong> - to pick an existing photo for the same features. We only read the files you actively choose.</li>
+            <li><strong>Microphone and speech recognition</strong> - only if you use Helm Bot voice input.</li>
         </ul>
-        <p>We do not sell or rent your information to any third party. We do not embed advertising SDKs.</p>
+        <p>You can revoke any of these in your device's Settings at any time. The app keeps working without them. Only the features that need them pause.</p>
 
-        <h2><span class="section-number">6.</span> Subscriptions &amp; Payments</h2>
-        <p>ImportHelm offers an optional paid subscription (Pro at $29.99/month, Team at $99/month) processed entirely through Apple's In-App Purchase system. We receive only your subscription status (active / canceled) and Apple's anonymous transaction identifier &mdash; never your credit card, billing address, or banking information. Subscriptions can be managed and canceled in your device's Settings &gt; Apple ID &gt; Subscriptions. Refund requests are handled by Apple per Apple's policy.</p>
+        <h2><span class="section-number">8.</span> Public Data Sources</h2>
+        <p>To keep tariff, currency, and screening information current, the app reads from public sources such as currency exchange rates, the Federal Register, and a denied-party and sanctions list, and it runs a basic network reachability check. These are standard lookups. No personal data of yours is sent in those requests.</p>
 
-        <h2><span class="section-number">7.</span> Children's Privacy</h2>
-        <p>ImportHelm is a professional import-management tool and is not directed at children under 13. We do not knowingly collect information from children. If you believe a child has used the app, contact us and we will remove relevant data.</p>
-
-        <h2><span class="section-number">8.</span> Your Choices &amp; Rights</h2>
-        <p>You can:</p>
+        <h2><span class="section-number">9.</span> Your Choices and Rights</h2>
+        <p>Because the app is built around local storage, you control most of your data directly:</p>
         <ul>
-            <li>Delete all locally stored data via Settings &gt; Security &amp; Privacy &gt; Delete All Data</li>
-            <li>Uninstall the app to remove all on-device data permanently</li>
-            <li>Revoke camera and photo permissions in your device's Settings</li>
-            <li>Cancel any active subscription via your Apple ID's Subscriptions page</li>
-            <li>Email us at the address below to request information about, or deletion of, any data we hold</li>
+            <li>Erase all on-device data from the in-app Settings.</li>
+            <li>Delete the app to remove all on-device data permanently.</li>
+            <li>Revoke camera, photo, or microphone permissions in your device's Settings.</li>
+            <li>Unsubscribe from the newsletter or digests in the app or from the link in any email.</li>
+            <li>Cancel a subscription from your Apple ID's Subscriptions page.</li>
+            <li>Email us to ask what data we hold for your device, or to have it deleted. The data we hold off-device is limited to anonymous usage records keyed to your device ID and any email you signed up with.</li>
         </ul>
-        <p>Because the app is built primarily on local storage, most rights (access, deletion, portability) are exercised directly on the device.</p>
+        <p>We honor access and deletion requests regardless of where you live, including for users in the EU, the UK, and California. We do not sell personal information.</p>
 
-        <h2><span class="section-number">9.</span> Changes to This Policy</h2>
-        <p>We may update this policy as ImportHelm adds features (e.g., cloud sync, team accounts). Changes are reflected here with a new effective date, and material changes will be surfaced inside the app.</p>
+        <h2><span class="section-number">10.</span> Children's Privacy</h2>
+        <p>ImportHelm is a professional import-management tool and is not directed at children under 13. We do not knowingly collect information from children. If you believe a child has used the app, contact us and we will remove any related data.</p>
 
-        <h2><span class="section-number">10.</span> Contact</h2>
-        <p>For questions, requests, or concerns regarding this Privacy Policy or your data:</p>
+        <h2><span class="section-number">11.</span> International Users</h2>
+        <p>SVLTMK LLC is based in the United States. If you use ImportHelm from outside the US, the limited data described above is processed in the United States, where data-protection laws may differ from those in your home country.</p>
+
+        <h2><span class="section-number">12.</span> Changes to This Policy</h2>
+        <p>We may update this policy as the app changes. Updates are posted here with a new date, and we will surface material changes inside the app before they take effect.</p>
+
+        <h2><span class="section-number">13.</span> Contact</h2>
+        <p>For questions or requests about this policy or your data:</p>
         <div class="contact-box">
-            <p>SVLTMK LLC</p>
+            <p>SVLTMK LLC, maker of ImportHelm</p>
             <p class="contact-email"><a href="mailto:kentnunez@yahoo.com">kentnunez@yahoo.com</a></p>
         </div>
 
         <div class="footer">
             <p>&copy; 2026 SVLTMK LLC. All rights reserved.</p>
-            <p>ImportHelm v3.4.0</p>
+            <p>ImportHelm v3.5.0</p>
         </div>
     </div>
 </body>
